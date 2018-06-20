@@ -19,7 +19,6 @@ from django.urls import path, include, re_path
 from chat import views
 
 urlpatterns = [
-    path('chat/',include('chat.urls')),
     path('admin/', admin.site.urls),
     path('chat/' , include('chat.urls')),
     re_path(r'^$',views.IndexView.as_view())
