@@ -16,6 +16,9 @@ class IndexView(View):
     def get(self,request):
         form = UserForm()
         return render(request,'chat/index.html',{'form':form})
+    def post(self,request):
+        form = UserForm()
+        return render(request,'chat/index.html',{'form':form})
 
 class ChatView(View):
     def get(self,request, **kwargs):
@@ -46,27 +49,26 @@ class UsernameView(View):
             except:
                 MyUser.DoesNotExist()
             u = MyUser.objects.get(username=username)
-            if(password==u.password):
+            if(u.check_password(password)):
                 return HttpResponseRedirect(username+'/chat')
             else:
-                return IndexView.get()
-        return 
-    def get(self,request):
-        
+                return IndexView.get() 
 class SignUpView(View):
+    def get(self,request):
+        form = SignUpForm()
+        return render(request,'chat/signup.html',{'form':form})
     def post(self,request):
-        print("\nsakdlsad\n")
-        sign_up_form = SignUpForm(request.POST)
-        if sign_up_form.is_valid():
-            username = str(form.cleaned_data['username'])
-            password = str(form.cleaned_data['password'])
-            first_name = str(form.cleaned_data['fname'])
-            second_name = str(form.cleaned_data['sname'])
-            email_address = str(form.cleaned_data['email'])
-            if(MyUser.objects.filter(username = username).count()==1):
-                return
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            new_user = MyUser()
+            new_user.username = str(form.cleaned_data['username'])
+            new_user.set_password(str(form.cleaned_data['password']))
+            new_user.first_name = str(form.cleaned_data['fname'])
+            new_user.second_name = str(form.cleaned_data['sname'])
+            new_user.email_address = str(form.cleaned_data['email'])
+            if(MyUser.objects.filter(username__lte = new_user.username).count()==1):
+                return HttpResponseRedirect('/error')
             else:
-                new_user = MyUser(username=username,password=password,first_name=first_name,last_name=second_name,email=email_address)
                 new_user.save()
-                return HttpResponseRedirect('')
-        return
+                return HttpResponseRedirect('/')
+        return render(request,'chat/signup.html',{'form':form})
