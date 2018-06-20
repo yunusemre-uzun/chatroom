@@ -40,9 +40,7 @@ class IndexView(View):
 class ChatView(View):
 
     def get(self,request):
-        messageList = Message.objects.order_by('-date')
-        context = {'roomName':'1' , 'messageList':messageList[::-1]}
-        message_list = list(Message.objects.all())
+        message_list = Message.objects.order_by('-date')
         form = MessageForm()
         context = {'roomName':'1','messageList':message_list,'form':form}
         return render(request,'chat/chatroom.html',context)

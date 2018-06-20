@@ -2,7 +2,7 @@
 # Python
 __pycache__/
 *.pyc
-
+*.xml
 # sqlite3
 *.sqlite3
 
