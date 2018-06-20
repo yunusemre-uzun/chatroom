@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h4>Chat Room {{ roomName }}</h4>
+
+{% if messageList %}
+
+    {% for message in messageList %}
+        <h4> > <strong>{{ message.userName }}</strong> : {{ message.messageText }} (<i>{{message.sendingTime}}</i>) </h4> <!-- TODO databasedeki isminden cek-->
+    {% endfor %}
+
+{% else %}
+<p>No messages available.</p>
+{% endif %}
+</body>
+</html>
