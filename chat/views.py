@@ -8,6 +8,8 @@ from django.utils import timezone
 # Create your views here.
 from django.views import View
 
+from chat.models import Message
+
 '''
 #Gecici deneme classi
 class Message:
@@ -38,8 +40,9 @@ class IndexView(View):
 class ChatView(View):
 
     def get(self,request):
-        global messageList
-        context = {'roomName':'1','messageList':messageList}
+
+        messageList = Message.objects.order_by('-date')
+        context = {'roomName':'1' , 'messageList':messageList[::-1]}
         return render(request,'chat/chatroom.html',context)
 
     def post(self, request):

@@ -10,8 +10,9 @@
 {% if messageList %}
 
     {% for message in messageList %}
-        <h4> > <strong>{{ message.userName }}</strong> : {{ message.messageText }} (<i>{{message.sendingTime}}</i>) </h4> <!-- TODO databasedeki isminden cek-->
+        <h4> > <strong>{{ message.sender }}</strong> : {{ message.text }} (<i>{{message.date}}</i>) </h4>
     {% endfor %}
+    Hello
 
 {% else %}
 <p>No messages available.</p>
