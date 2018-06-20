@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import datetime
 import time
 
@@ -43,3 +44,6 @@ class ChatView(View):
 
     def post(self, request):
         return
+=======
+from django.shortcuts import render
+>>>>>>> origin/master
