@@ -25,7 +25,6 @@ class ChatView(View):
         form = MessageForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             #print message.cleaned_data['my_form_field_name']
-            print("\nsdkjakjldsk\n")
             new_message = form.cleaned_data['new_message']
             message_object = Message(text=new_message,date=timezone.now())
             message_object.save()
