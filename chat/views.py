@@ -6,31 +6,7 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
 from django.views import View
-from chat.models import Message
-
-'''
-#Gecici deneme classi
-class Message:
-    def __init__(self,messageText,userName,sendingTime):
-        self.messageText = messageText
-        self.userName = userName
-        self.sendingTime = sendingTime
-messages =['Hi','Hello','How are you','Fine,thanks','And you?','Thank you']
-m1 = Message(messages[0],'user1',time.asctime( time.localtime(time.time())))
-time.sleep(1)
-m2 = Message(messages[1],'user2',time.asctime( time.localtime(time.time())))
-time.sleep(1)
-m3 = Message(messages[2],'user1',time.asctime( time.localtime(time.time())))
-time.sleep(1)
-m4 = Message(messages[3],'user2',time.asctime( time.localtime(time.time())))
-time.sleep(1)
-m5 = Message(messages[4],'user2',time.asctime( time.localtime(time.time())))
-time.sleep(1)
-m6 = Message(messages[5],'user1',time.asctime( time.localtime(time.time())))
-messageList = [m1,m2,m3,m4,m5,m6]
-####
-'''
-from .models import Message,User
+from .models import Message
 from .forms import MessageForm
 
 class IndexView(View):
@@ -40,7 +16,7 @@ class IndexView(View):
 class ChatView(View):
 
     def get(self,request):
-        message_list = Message.objects.order_by('-date')
+        message_list = Message.objects.order_by('-date')[::-1]
         form = MessageForm()
         context = {'roomName':'1','messageList':message_list,'form':form}
         return render(request,'chat/chatroom.html',context)
