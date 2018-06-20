@@ -17,7 +17,7 @@
 <p>No messages available.</p>
 {% endif %}
 </body>
-<form action="/chat/" method="post">
+<form action="/user/{{ username }}/chat/" method="post">
     {% csrf_token %}
     {{form}}
     <input type="submit" value="Send">

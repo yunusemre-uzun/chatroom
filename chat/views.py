@@ -4,31 +4,42 @@ import time
 
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 from django.utils import timezone
 from django.views import View
-from .models import Message
-from .forms import MessageForm
+from .models import Message, User
+from .forms import MessageForm, UserForm
+
 
 class IndexView(View):
     def get(self,request):
-        return render(request,'chat/index.html',{})
+        form = UserForm()
+        return render(request,'chat/index.html',{'form':form})
 
 class ChatView(View):
-
-    def get(self,request):
+    def get(self,request, **kwargs):
+        username = kwargs['username']
+        print(username)
         message_list = Message.objects.order_by('-date')[::-1]
         form = MessageForm()
-        context = {'roomName':'1','messageList':message_list,'form':form}
+        context = {'roomName':'1','messageList':message_list,'form':form, 'username':username}
         return render(request,'chat/chatroom.html',context)
 
-    def post(self, request):
+    def post(self, request, **kwargs):
+        username = kwargs['username']
         form = MessageForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-            #print message.cleaned_data['my_form_field_name']
-            print("\nsdkjakjldsk\n")
             new_message = form.cleaned_data['new_message']
-            message_object = Message(text=new_message,date=timezone.now())
+            message_object = Message(text=new_message,sender= username,date=timezone.now())
             message_object.save()
-            HttpResponseRedirect('/chat/') # Redirect after POST
-        #return render(request,'/chat/',)
-        return self.get(request)
+        return self.get(request, username = username)
+
+
+class UsernameView(View):
+    def post(self,request):
+        form = UserForm(request.POST)
+        if form.is_valid():
+            username = str(form.cleaned_data['username'])
+            user = User(nickname= username)
+            user.save()
+            return HttpResponseRedirect(username+'/chat')
