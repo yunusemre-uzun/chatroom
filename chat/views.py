@@ -2,12 +2,10 @@ from django.shortcuts import render
 import datetime
 import time
 
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
-# Create your views here.
 from django.views import View
-
 from chat.models import Message
 
 '''
@@ -32,6 +30,8 @@ m6 = Message(messages[5],'user1',time.asctime( time.localtime(time.time())))
 messageList = [m1,m2,m3,m4,m5,m6]
 ####
 '''
+from .models import Message,User
+from .forms import MessageForm
 
 class IndexView(View):
     def get(self,request):
@@ -40,10 +40,21 @@ class IndexView(View):
 class ChatView(View):
 
     def get(self,request):
-
         messageList = Message.objects.order_by('-date')
         context = {'roomName':'1' , 'messageList':messageList[::-1]}
+        message_list = list(Message.objects.all())
+        form = MessageForm()
+        context = {'roomName':'1','messageList':message_list,'form':form}
         return render(request,'chat/chatroom.html',context)
 
     def post(self, request):
-        return
+        form = MessageForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            #print message.cleaned_data['my_form_field_name']
+            print("\nsdkjakjldsk\n")
+            new_message = form.cleaned_data['new_message']
+            message_object = Message(text=new_message,date=timezone.now())
+            message_object.save()
+            HttpResponseRedirect('/chat/') # Redirect after POST
+        #return render(request,'/chat/',)
+        return self.get(request)
