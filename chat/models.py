@@ -1,11 +1,10 @@
 from django.db import models
 from django.db.models import CASCADE
+from django.contrib.auth.models import User
+from django.contrib.auth.validators import ASCIIUsernameValidator
 
-
-class User(models.Model):
-    def __str__(self):
-        return self.getnickname()
-    nickname = models.CharField(max_length=1024)
+class MyUser(User):
+    username_validator = ASCIIUsernameValidator()
 
 class Message(models.Model):
     def __str__(self):
