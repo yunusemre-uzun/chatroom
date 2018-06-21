@@ -13,3 +13,6 @@ class SignUpForm(forms.Form):
     email = forms.EmailField(label='Email')
     fname = forms.CharField(label='First Name',max_length = 1024)
     sname = forms.CharField(label='Second Name',max_length = 1024)
+
+class AddFriendForm(forms.Form):
+    username = forms.CharField(label="Username",max_length=150)

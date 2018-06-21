@@ -7,6 +7,6 @@ app_name = 'chat'
 urlpatterns = [
     path('signup/', views.SignUpView.as_view(), name='signup_page'),
     path('', views.UsernameView.as_view(), name = 'username'),
-
+    path('<str:username>/friends/',views.FriendView.as_view(),name='friend'),
     path('<str:username>/chat/' , views.ChatView.as_view(), name = 'chat_screen'),
 ]

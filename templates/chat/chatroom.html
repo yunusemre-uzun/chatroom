@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+div {
+    width: 320px;
+    padding: 10px;
+    border: 5px solid rgb(253, 0, 0);
+    margin: 0;
+}
+</style>
 <head>
     {% load static %}
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Chatters</title>
 </head>
 <body>
 <h4>Chat Room {{ roomName }}</h4>
+<div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <p id = "messages">
@@ -20,7 +29,7 @@
 <p>No messages available.</p>
 {% endif %}
 </p>
-</body>
+</div>
 <form action="/user/{{ username }}/chat/" method="post">
     {% csrf_token %}
     {{form}}
