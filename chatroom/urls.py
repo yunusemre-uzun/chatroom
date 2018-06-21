@@ -20,5 +20,5 @@ import chat
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('chat.urls')),
-    re_path(r'^$', chat.views.IndexView.as_view())
+    re_path(r'^$', chat.views.IndexView.as_view(), name = 'index')
 ]

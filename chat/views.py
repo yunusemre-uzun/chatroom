@@ -31,7 +31,7 @@ class ChatView(View):
         user = MyUser.objects.get(username= username)
         receiver = MyUser.objects.get(username = receiver_name)
         #filter(Q(..) | Q(..)) allows the usage of or in filter function
-        message_list = Message.objects.filter(Q(sender = user.id,receiver = receiver.id) | Q(sender = receiver.id, receiver = user.id)).order_by('-date')[:10:-1]
+        message_list = Message.objects.filter(Q(sender = user.id,receiver = receiver.id) | Q(sender = receiver.id, receiver = user.id)).order_by('-date')[::-1]
         form = MessageForm()
         context = {'roomName':'','messageList':message_list,'form':form, 'username':username ,'receiver':receiver}
         if (request.is_ajax()): #if the request is ajax, only renders the message part
@@ -111,11 +111,11 @@ class FriendView(View):
             friend_name=str(form.cleaned_data['username'])
             friend = MyUser.objects.get(username=friend_name)
             if friend in friends_list:
-                return HttpResponseRedirect('')
+                return HttpResponseRedirect(reverse('chat:friend',args=(username,)))
             else:
                 myuser.add_friend(friend_name)
                 friend.add_friend(username)
-                return HttpResponseRedirect('')
+                return HttpResponseRedirect(reverse('chat:friend',args=(username,)))
         return render(request,'chat/friends.html',{'flist':[username]})
 
 

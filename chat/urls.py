@@ -3,6 +3,7 @@ from django.urls import path, re_path
 
 from chat import views
 
+
 app_name = 'chat'
 urlpatterns = [
     path('signup/', views.SignUpView.as_view(), name='signup_page'),

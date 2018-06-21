@@ -1,38 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <style>
-div {
-    width: 320px;
-    padding: 10px;
-    border: 5px solid rgb(253, 0, 0);
-    margin: 0;
-}
+    #messageBorder {
+        width: 500px;
+        height: 600px;
+        border: 15px solid #152780;
+        padding: 15px;
+        margin: 25px;
+        left:100%;
+    }
+    #messageBorder {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column-reverse;
+    }
 </style>
+
 
 <head>
     {% load static %}
+    {% if user.username != username  %}
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <title>Chatters</title>
     <h4>Chat Room of {{ username }} and {{ receiver }}</h4>
+
 </head>
 
 <body>
 
 <script src= "{% static 'script/main.js' %}"></script>
 
-<div id = "messages">
-    {% if messageList %}
-        {% for message in messageList %}
-            <h4> > <strong>{{ message.sender }}</strong> : {{ message.text }} (<i>{{message.date}}</i>) </h4>
-        {% endfor %}
+<div id = "messageBorder">
+        <div id = "messages">
+            {% if messageList %}
+                {% for message in messageList %}
+                    <h4> > <strong>{{ message.sender }}</strong> : {{ message.text }} (<i>{{message.date}}</i>) </h4>
+                {% endfor %}
 
-    {% else %}
-        <p>No messages available.</p>
-    {% endif %}
+            {% else %}
+                <p>No messages available.</p>
+            {% endif %}
+        </div>
 </div>
-
 <form action="/user/{{ username }}/chat/{{ receiver }}" method="post">
     {% csrf_token %}
     {{form}}
@@ -41,6 +55,10 @@ div {
 
 
 <a href="/"> Log out </a>
+{% else %}
+        <h4>You are not logged in as user {{ username }}, you can't see this page.</h4>
+        <a href="{% url 'index' %}">Click here to log in</a>
+{% endif %}
 </body>
 
 </html>
