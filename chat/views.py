@@ -23,7 +23,7 @@ class IndexView(View):
 class ChatView(View):
     def get(self,request, **kwargs):
         username = kwargs['username']
-        message_list = Message.objects.order_by('-date')[::-1]
+        message_list = Message.objects.order_by('-date')[:15:-1]
         form = MessageForm()
         context = {'roomName':'1','messageList':message_list,'form':form, 'username':username}
         return render(request,'chat/chatroom.html',context)

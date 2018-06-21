@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <h4>Chat Room {{ roomName }}</h4>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
+<p id = "messages">
 {% if messageList %}
 
     {% for message in messageList %}
@@ -16,6 +19,7 @@
 {% else %}
 <p>No messages available.</p>
 {% endif %}
+</p>
 </body>
 <form action="/user/{{ username }}/chat/" method="post">
     {% csrf_token %}
@@ -23,5 +27,6 @@
     <input type="submit" value="Send">
 </form>
 
+<script src= "{% static 'script/main.js' %}"></script>
 </html>
-<script src="static/scripts/main.js"></script>
+
