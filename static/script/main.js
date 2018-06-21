@@ -13,4 +13,4 @@ function refresh() {
 
 };
 
-setTimeout(refresh,3000);
+setTimeout(refresh,2000);

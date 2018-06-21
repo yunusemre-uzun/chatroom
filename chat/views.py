@@ -1,6 +1,7 @@
 import json
 
 from  django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 from django.shortcuts import render
 import datetime
 import time
@@ -26,9 +27,12 @@ class ChatView(View):
     def get(self,request, **kwargs):
 
         username = kwargs['username']
-        message_list = Message.objects.order_by('-date')[:15:-1]
+        receiverName = kwargs['receiver']
+        user = MyUser.objects.get(username= username)
+        receiver = MyUser.objects.get(username = receiverName)
+        message_list = Message.objects.filter(Q(sender = user.id,receiver = receiver.id) | Q(sender = receiver.id, receiver = user.id)).order_by('-date')[:10:-1]
         form = MessageForm()
-        context = {'roomName':'1','messageList':message_list,'form':form, 'username':username}
+        context = {'roomName':'','messageList':message_list,'form':form, 'username':username ,'receiver':receiver}
         if (request.is_ajax()):
             context = {'messageList': message_list,'roomName':'2' }
             return render(request, 'chat/ajaxChatroom.html', context)
@@ -37,13 +41,16 @@ class ChatView(View):
 
     def post(self, request, **kwargs):
         username = kwargs['username']
+        receiver = kwargs['receiver']
         form = MessageForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
+            print('Hello')
             user = MyUser.objects.get(username=username)
+            receiver = MyUser.objects.get(username = receiver)
             new_message = form.cleaned_data['new_message']
-            message_object = Message(text=new_message,sender= user,date=timezone.now())
+            message_object = Message(text=new_message,sender= user,receiver = receiver ,date=timezone.now())
             message_object.save()
-        return self.get(request, username = username)
+        return self.get(request, username = username , receiver = receiver)
 
 
 class UsernameView(View):
@@ -76,7 +83,7 @@ class SignUpView(View):
             new_user.first_name = str(form.cleaned_data['fname'])
             new_user.second_name = str(form.cleaned_data['sname'])
             new_user.email_address = str(form.cleaned_data['email'])
-            if(MyUser.objects.filter(username__lte = new_user.username).count()==1):
+            if(MyUser.objects.filter(username = new_user.username).count()==1):
                 return HttpResponseRedirect('/error')
             else:
                 new_user.save()

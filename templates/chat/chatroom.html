@@ -6,7 +6,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <title>Title</title>
-    <h4>Chat Room {{ roomName }}</h4>
+    <h4>Chat Room of {{ username }} and {{ receiver }}</h4>
 </head>
 
 <body>
@@ -25,7 +25,7 @@
     {% endif %}
 </div>
 
-<form action="/user/{{ username }}/chat/" method="post">
+<form action="/user/{{ username }}/chat/{{ receiver }}" method="post">
     {% csrf_token %}
     {{form}}
     <input type="submit" value="Send">

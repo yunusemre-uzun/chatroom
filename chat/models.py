@@ -10,7 +10,7 @@ class MyUser(User):
     friend_list = models.CharField(max_length=max_number_of_friends*151,default=":.")
     def add_friend(self,username):
         if(self.isFriend(username)):
-            return 
+            return
         try:
             MyUser.objects.get(username=username)
         except:
@@ -33,15 +33,15 @@ class MyUser(User):
         if username in list_of_friends:
             return True
         else:
-            return False 
+            return False
 
 
 class Message(models.Model):
     def __str__(self):
         return self.text
     text = models.CharField(max_length=2048)
-    sender = models.ForeignKey(MyUser,on_delete=models.CASCADE)
-    receiver = models.CharField(max_length=1024,default="user")
+    sender = models.ForeignKey(MyUser,on_delete=models.CASCADE , related_name='sender')
+    receiver = models.ForeignKey(MyUser , on_delete = models.CASCADE, related_name = 'receiver')
     is_read = models.BooleanField(default=0)
     date = models.DateTimeField('date wrote')
 
