@@ -32,8 +32,9 @@ class ChatView(View):
         username = kwargs['username']
         form = MessageForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
+            user = MyUser.objects.get(username=username)
             new_message = form.cleaned_data['new_message']
-            message_object = Message(text=new_message,sender= username,date=timezone.now())
+            message_object = Message(text=new_message,sender= user,date=timezone.now())
             message_object.save()
         return self.get(request, username = username)
 
@@ -50,11 +51,10 @@ class UsernameView(View):
                 MyUser.DoesNotExist()
             u = MyUser.objects.get(username=username)
             if(u.check_password(password)):
+                u.is_active=True
                 return HttpResponseRedirect(username+'/chat')
             else:
-                return IndexView.get()
-
-
+                return HttpResponseRedirect('/')
 class SignUpView(View):
     def get(self,request):
         form = SignUpForm()
