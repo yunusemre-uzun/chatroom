@@ -83,7 +83,6 @@ class FriendView(View):
         user = MyUser.objects.get(username=username)
         friends_list = user.friend_list[1:len(user.friend_list)-1].split(':')
         print(friends_list)
-        print("\n\n")
         if friends_list[0]=='' :
             friends_list = []
         context = {'flist':friends_list,'username':username,'form':form}
@@ -98,11 +97,11 @@ class FriendView(View):
             friend_name=str(form.cleaned_data['username'])
             friend = MyUser.objects.get(username=friend_name)
             if friend in friends_list:
-                return render(request,'chat/friends.html',context)
+                return HttpResponseRedirect('')
             else:
                 myuser.add_friend(friend_name)
                 friend.add_friend(username)
-                return render(request,'chat/friends.html',{'flist':[username]})
+                return HttpResponseRedirect('')
         return render(request,'chat/friends.html',{'flist':[username]})
 
         
