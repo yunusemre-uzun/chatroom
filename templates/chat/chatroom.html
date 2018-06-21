@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <style>
 div {
     width: 320px;
@@ -8,36 +9,39 @@ div {
     margin: 0;
 }
 </style>
+
 <head>
     {% load static %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <title>Chatters</title>
+    <h4>Chat Room of {{ username }} and {{ receiver }}</h4>
 </head>
+
 <body>
-<h4>Chat Room {{ roomName }}</h4>
-<div>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-<p id = "messages">
-{% if messageList %}
+<script src= "{% static 'script/main.js' %}"></script>
 
-    {% for message in messageList %}
-        <h4> > <strong>{{ message.sender }}</strong> : {{ message.text }} (<i>{{message.date}}</i>) </h4>
-    {% endfor %}
+<div id = "messages">
+    {% if messageList %}
+        {% for message in messageList %}
+            <h4> > <strong>{{ message.sender }}</strong> : {{ message.text }} (<i>{{message.date}}</i>) </h4>
+        {% endfor %}
 
-{% else %}
-<p>No messages available.</p>
-{% endif %}
-</p>
+    {% else %}
+        <p>No messages available.</p>
+    {% endif %}
 </div>
-<form action="/user/{{ username }}/chat/" method="post">
+
+<form action="/user/{{ username }}/chat/{{ receiver }}" method="post">
     {% csrf_token %}
     {{form}}
     <input type="submit" value="Send">
 </form>
 
-<script src= "{% static 'script/main.js' %}"></script>
+
 <a href="/"> Log out </a>
+</body>
 
 </html>
 

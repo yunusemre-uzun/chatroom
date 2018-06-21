@@ -1,4 +1,7 @@
+import json
+
 from  django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 from django.shortcuts import render
 import datetime
 import time
@@ -22,21 +25,33 @@ class IndexView(View):
 
 class ChatView(View):
     def get(self,request, **kwargs):
+
         username = kwargs['username']
-        message_list = Message.objects.order_by('-date')[:15:-1]
+        receiver_name = kwargs['receiver']
+        user = MyUser.objects.get(username= username)
+        receiver = MyUser.objects.get(username = receiver_name)
+        #filter(Q(..) | Q(..)) allows the usage of or in filter function
+        message_list = Message.objects.filter(Q(sender = user.id,receiver = receiver.id) | Q(sender = receiver.id, receiver = user.id)).order_by('-date')[:10:-1]
         form = MessageForm()
-        context = {'roomName':'1','messageList':message_list,'form':form, 'username':username}
+        context = {'roomName':'','messageList':message_list,'form':form, 'username':username ,'receiver':receiver}
+        if (request.is_ajax()): #if the request is ajax, only renders the message part
+            context = {'messageList': message_list }
+            return render(request, 'chat/ajaxChatroom.html', context)
+
         return render(request,'chat/chatroom.html',context)
 
     def post(self, request, **kwargs):
         username = kwargs['username']
+        receiver = kwargs['receiver']
         form = MessageForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
+            print('Hello')
             user = MyUser.objects.get(username=username)
+            receiver = MyUser.objects.get(username = receiver)
             new_message = form.cleaned_data['new_message']
-            message_object = Message(text=new_message,sender= user,date=timezone.now())
+            message_object = Message(text=new_message,sender= user,receiver = receiver ,date=timezone.now())
             message_object.save()
-        return self.get(request, username = username)
+        return self.get(request, username = username , receiver = receiver)
 
 
 class UsernameView(View):
@@ -88,9 +103,8 @@ class FriendView(View):
         context = {'flist':friends_list,'username':username,'form':form}
         return render(request,'chat/friends.html',context)
     def post(self,request, **kwargs):
-        username = kwargs['username']
         form = AddFriendForm(request.POST)
-        user = kwargs['username']
+        username = kwargs['username']
         myuser = MyUser.objects.get(username=username)
         friends_list = (myuser.friend_list)[1:len(myuser.friend_list)-1:].split(',')
         if form.is_valid():
@@ -104,4 +118,4 @@ class FriendView(View):
                 return HttpResponseRedirect('')
         return render(request,'chat/friends.html',{'flist':[username]})
 
-        
+
