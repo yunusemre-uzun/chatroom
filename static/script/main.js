@@ -1,4 +1,5 @@
 console.log('open');
+//window.location.href = window.location.protocol +'//'+ window.location.host + window.location.pathname;
 function refresh() {
     console.log("refresh");
     $.ajax({
@@ -11,6 +12,6 @@ function refresh() {
         }
     });
 
-};
-
+}
 setTimeout(refresh,2000);
+

@@ -12,7 +12,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views import View
 from .models import Message, MyUser
-from .forms import MessageForm, UserForm,SignUpForm
+from .forms import *
 
 
 class IndexView(View):
@@ -66,7 +66,7 @@ class UsernameView(View):
             u = MyUser.objects.get(username=username)
             if(u.check_password(password)):
                 u.is_active=True
-                return HttpResponseRedirect(username+'/chat')
+                return HttpResponseRedirect(username+'/friends/')
             else:
                 return HttpResponseRedirect('/')
 class SignUpView(View):
@@ -84,8 +84,39 @@ class SignUpView(View):
             new_user.second_name = str(form.cleaned_data['sname'])
             new_user.email_address = str(form.cleaned_data['email'])
             if(MyUser.objects.filter(username = new_user.username).count()==1):
-                return HttpResponseRedirect('/error')
+                return render(request,'chat/signup.html',{'form':form})
             else:
                 new_user.save()
                 return HttpResponseRedirect('/')
         return render(request,'chat/signup.html',{'form':form})
+
+class FriendView(View):
+    def get(self,request, **kwargs):
+        username = kwargs['username']
+        form = AddFriendForm(request.POST)
+        user = MyUser.objects.get(username=username)
+        friends_list = user.friend_list[1:len(user.friend_list)-1].split(',')
+        print(friends_list)
+        print("\n\n")
+        if friends_list[0]=='' :
+            friends_list = []
+        context = {'flist':friends_list,'username':username,'form':form}
+        return render(request,'chat/friends.html',context)
+    def post(self,request, **kwargs):
+        username = kwargs['username']
+        form = AddFriendForm(request.POST)
+        user = kwargs['username']
+        myuser = MyUser.objects.get(username=username)
+        friends_list = (myuser.friend_list)[1:len(myuser.friend_list)-1:].split(',')
+        if form.is_valid():
+            friend_name=str(form.cleaned_data['username'])
+            friend = MyUser.objects.get(username=friend_name)
+            if friend in friends_list:
+                return render(request,'chat/friends.html',context)
+            else:
+                myuser.add_friend(friend_name)
+                friend.add_friend(username)
+                return render(request,'chat/friends.html',context)
+        return render(request,'chat/friends.html',{'flist':[username]})
+
+
