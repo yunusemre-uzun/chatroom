@@ -34,7 +34,7 @@ class ChatView(View):
         form = MessageForm()
         context = {'roomName':'','messageList':message_list,'form':form, 'username':username ,'receiver':receiver}
         if (request.is_ajax()):
-            context = {'messageList': message_list,'roomName':'2' }
+            context = {'messageList': message_list }
             return render(request, 'chat/ajaxChatroom.html', context)
 
         return render(request,'chat/chatroom.html',context)
@@ -103,9 +103,8 @@ class FriendView(View):
         context = {'flist':friends_list,'username':username,'form':form}
         return render(request,'chat/friends.html',context)
     def post(self,request, **kwargs):
-        username = kwargs['username']
         form = AddFriendForm(request.POST)
-        user = kwargs['username']
+        username = kwargs['username']
         myuser = MyUser.objects.get(username=username)
         friends_list = (myuser.friend_list)[1:len(myuser.friend_list)-1:].split(',')
         if form.is_valid():
