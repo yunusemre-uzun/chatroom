@@ -3,7 +3,7 @@ from django.shortcuts import render
 import datetime
 import time
 
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, request
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
@@ -50,23 +50,28 @@ class UsernameView(View):
                 return HttpResponseRedirect(username+'/chat')
             else:
                 return IndexView.get()
-        return 
+        return
     def get(self,request):
-        
+        return HttpResponse("get Username View")
+
 class SignUpView(View):
-    def post(self,request):
+    def get(self,request):
+        form = SignUpForm()
+        return render(request,'chat/signup.html',{'form':form})
+
+    def post(self):
         print("\nsakdlsad\n")
         sign_up_form = SignUpForm(request.POST)
         if sign_up_form.is_valid():
-            username = str(form.cleaned_data['username'])
-            password = str(form.cleaned_data['password'])
-            first_name = str(form.cleaned_data['fname'])
-            second_name = str(form.cleaned_data['sname'])
-            email_address = str(form.cleaned_data['email'])
+            username = str(sign_up_form.cleaned_data['username'])
+            password = str(sign_up_form.cleaned_data['password'])
+            first_name = str(sign_up_form.cleaned_data['fname'])
+            second_name = str(sign_up_form.cleaned_data['sname'])
+            email_address = str(sign_up_form.cleaned_data['email'])
             if(MyUser.objects.filter(username = username).count()==1):
                 return
             else:
                 new_user = MyUser(username=username,password=password,first_name=first_name,last_name=second_name,email=email_address)
                 new_user.save()
-                return HttpResponseRedirect('')
+                return render(request,'chat/signup.html',{'form'})
         return
