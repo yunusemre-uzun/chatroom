@@ -2,11 +2,11 @@ console.log('open');
 function refresh() {
     console.log("refresh");
     $.ajax({
-        url: '/user/ilayda/chat',
+        url: '',
         dataType : 'html',
-        cache : true,
         timeout : 30000,
         success: function(data){
+
             $('#messages').html(data);
         }
     });

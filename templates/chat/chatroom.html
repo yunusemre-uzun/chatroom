@@ -1,34 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <title>Title</title>
+    <h4>Chat Room {{ roomName }}</h4>
 </head>
+
 <body>
-<h4>Chat Room {{ roomName }}</h4>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-<p id = "messages">
-{% if messageList %}
+<script src= "{% static 'script/main.js' %}"></script>
 
-    {% for message in messageList %}
-        <h4> > <strong>{{ message.sender }}</strong> : {{ message.text }} (<i>{{message.date}}</i>) </h4>
-    {% endfor %}
+<div id = "messages">
+    {% if messageList %}
 
-{% else %}
-<p>No messages available.</p>
-{% endif %}
-</p>
-</body>
+        {% for message in messageList %}
+            <h4> > <strong>{{ message.sender }}</strong> : {{ message.text }} (<i>{{message.date}}</i>) </h4>
+        {% endfor %}
+
+    {% else %}
+        <p>No messages available.</p>
+    {% endif %}
+</div>
+
 <form action="/user/{{ username }}/chat/" method="post">
     {% csrf_token %}
     {{form}}
     <input type="submit" value="Send">
 </form>
 
-<script src= "{% static 'script/main.js' %}"></script>
+
 <a href="/"> Log out </a>
+</body>
 
 </html>
 

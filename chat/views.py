@@ -1,3 +1,5 @@
+import json
+
 from  django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 import datetime
@@ -22,10 +24,15 @@ class IndexView(View):
 
 class ChatView(View):
     def get(self,request, **kwargs):
+
         username = kwargs['username']
         message_list = Message.objects.order_by('-date')[:15:-1]
         form = MessageForm()
         context = {'roomName':'1','messageList':message_list,'form':form, 'username':username}
+        if (request.is_ajax()):
+            context = {'messageList': message_list,'roomName':'2' }
+            return render(request, 'chat/ajaxChatroom.html', context)
+
         return render(request,'chat/chatroom.html',context)
 
     def post(self, request, **kwargs):
