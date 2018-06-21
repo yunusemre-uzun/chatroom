@@ -17,6 +17,7 @@ class MyUser(User):
             print("User does not exist")
             return
         self.friend_list = self.friend_list[0:len(self.friend_list)-1] + ":" + username + "."
+        print("\n\n" + self.friend_list + "\n\n")
     def remove_friend(self,username):
         if self.isFriend(username):
             list_of_friends=self.friend_list[0:len(self.friend_list)-1].split(':')

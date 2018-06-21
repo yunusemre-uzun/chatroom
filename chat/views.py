@@ -95,7 +95,7 @@ class FriendView(View):
         username = kwargs['username']
         form = AddFriendForm(request.POST)
         user = MyUser.objects.get(username=username)
-        friends_list = user.friend_list[1:len(user.friend_list)-1].split(',')
+        friends_list = user.friend_list[1:len(user.friend_list)-1].split(':')
         print(friends_list)
         print("\n\n")
         if friends_list[0]=='' :
@@ -115,7 +115,7 @@ class FriendView(View):
             else:
                 myuser.add_friend(friend_name)
                 friend.add_friend(username)
-                return render(request,'chat/friends.html',context)
+                return render(request,'chat/friends.html',{'flist':[username]})
         return render(request,'chat/friends.html',{'flist':[username]})
 
 
