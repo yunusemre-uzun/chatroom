@@ -27,13 +27,14 @@ class ChatView(View):
     def get(self,request, **kwargs):
 
         username = kwargs['username']
-        receiverName = kwargs['receiver']
+        receiver_name = kwargs['receiver']
         user = MyUser.objects.get(username= username)
-        receiver = MyUser.objects.get(username = receiverName)
+        receiver = MyUser.objects.get(username = receiver_name)
+        #filter(Q(..) | Q(..)) allows the usage of or in filter function
         message_list = Message.objects.filter(Q(sender = user.id,receiver = receiver.id) | Q(sender = receiver.id, receiver = user.id)).order_by('-date')[:10:-1]
         form = MessageForm()
         context = {'roomName':'','messageList':message_list,'form':form, 'username':username ,'receiver':receiver}
-        if (request.is_ajax()):
+        if (request.is_ajax()): #if the request is ajax, only renders the message part
             context = {'messageList': message_list }
             return render(request, 'chat/ajaxChatroom.html', context)
 
