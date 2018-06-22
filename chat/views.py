@@ -31,7 +31,7 @@ class ChatView(View):
         user = MyUser.objects.get(username= username)
         receiver = MyUser.objects.get(username = receiver_name)
         #filter(Q(..) | Q(..)) allows the usage of or in filter function
-        message_list = Message.objects.filter(Q(sender = user.id,receiver = receiver.id) | Q(sender = receiver.id, receiver = user.id)).order_by('-date')[:10:-1]
+        message_list = Message.objects.filter(Q(sender = user.id,receiver = receiver.id) | Q(sender = receiver.id, receiver = user.id)).order_by('-date')[::-1]
         form = MessageForm()
         context = {'roomName':'','messageList':message_list,'form':form, 'username':username ,'receiver':receiver}
         #change the unread messages from {{receivername}} to {{username}} in database to read(coming messages)
@@ -103,6 +103,10 @@ class FriendView(View):
         form = AddFriendForm(request.POST)
         user = MyUser.objects.get(username=username)
         friends_list = user.friend_list[1:len(user.friend_list)-1].split(':')
+        friends_object_list=[]
+        for friend in friends_list:
+            friends_object_list.append(MyUser.objects.get(username=friend))
+        friends_object_list=list(friends_object_list)
         ret = [] #the list to send html
         if friends_list[0]=='' :
             friends_list = []
@@ -113,9 +117,9 @@ class FriendView(View):
             unread_message_count_list.append((Message.objects.filter(sender=friend_object.id,receiver=user.id,is_read=False).count()))
         #create the list of tuples which [(friend_name,unread_message_count)]
         for i in range(len(friends_list)):
-            ret.append((friends_list[i],unread_message_count_list[i]))
+            ret.append((friends_object_list[i],unread_message_count_list[i]))
         ####################################
-        context = {'flist':ret,'message_count':unread_message_count_list,'username':username,'form':form}
+        context = {'user':user,'flist':ret,'message_count':unread_message_count_list,'username':username,'form':form}
         return render(request,'chat/friends.html',context)
     def post(self,request, **kwargs):
         form = AddFriendForm(request.POST)
