@@ -8,8 +8,8 @@
     <h2>Friends</h2>
     <p id = "friends">
         {% if flist %}
-            {% for friend in flist %}
-                <li> <a href="/user/{{username}}/chat/{{friend}}"> {{friend}} </a></li>
+            {% for tuple in flist %}
+                <li> <a href="/user/{{username}}/chat/{{ tuple.0 }}"> {{ tuple.0 }}({{ tuple.1 }}) </a></li>
             {% endfor %}
         
         {% else %}
