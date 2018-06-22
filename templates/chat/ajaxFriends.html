@@ -1,0 +1,16 @@
+{% load static %}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<div id = "friends">
+    {% if flist %}
+        {% for tuple in flist %}
+            <li> <a href="/user/{{username}}/chat/{{ tuple.0 }}"> {{ tuple.0 }}({{ tuple.1 }}) </a></li>
+        {% endfor %}
+    {% else %}
+    <p>No friends available.</p>
+    <!--<a href="{{username}}/chat"> Clict to enter general server </a>-->
+    {% endif %}
+</div>
+
+<script src= "{% static 'script/friends.js' %}"></script>

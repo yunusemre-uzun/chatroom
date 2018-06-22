@@ -11,5 +11,4 @@ urlpatterns = [
     path('', views.UsernameView.as_view(), name = 'username'),
     path('<str:username>/chat/<str:receiver>' , views.ChatView.as_view(), name = 'chat_screen'),
     path('<str:username>/friends/',views.FriendView.as_view(),name='friend'),
-
 ]

@@ -1,0 +1,12 @@
+#friendBorder {
+    width: 150px;
+    height: 200px;
+    border: 5px solid #152780;
+    padding: 15px;
+    margin: 25px;
+    left:100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}

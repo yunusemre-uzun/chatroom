@@ -49,7 +49,7 @@ class Message(models.Model):
     text = models.CharField(max_length=2048)
     sender = models.ForeignKey(MyUser,on_delete=models.CASCADE , related_name='sender')
     receiver = models.ForeignKey(MyUser , on_delete = models.CASCADE, related_name = 'receiver')
-    is_read = models.BooleanField(default=0)
+    is_read = models.BooleanField(default=False)
     date = models.DateTimeField('date wrote')
 
 
