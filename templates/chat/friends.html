@@ -5,20 +5,26 @@
     <title>Chatroom</title>
 </head>
 <body>
-    <h2>Friends</h2>
-    <p id = "friends">
-        {% if flist %}
-            {% for friend in flist %}
-                <li> <a href="/user/{{username}}/chat/{{friend}}"> {{friend}} </a></li>
-            {% endfor %}
-        
-        {% else %}
-        <p>No friends available.</p>
-        <a href="{{username}}/chat"> Clict to enter general server </a>
-        {% endif %}
-        <form action="" method="post">
-            {% csrf_token %}
-            {{form}}
-            <input type="submit" value="Add">
-        </form>
-    </p>
+
+   {% if user.username == username  %}
+        <h2>Friends</h2>
+        <p id = "friends">
+            {% if flist %}
+                {% for friend in flist %}
+                    <li> <a href="/user/{{username}}/chat/{{friend}}"> {{friend}} </a></li>
+                {% endfor %}
+
+            {% else %}
+            <p>No friends available.</p>
+            <a href="{{username}}/chat"> Clict to enter general server </a>
+            {% endif %}
+            <form action="" method="post">
+                {% csrf_token %}
+                {{form}}
+                <input type="submit" value="Add">
+            </form>
+        </p>
+    {% else %}
+       <h4>You are not logged in as user {{ username }}, you can't see this page.</h4>
+       <a href="{% url 'index' %}">Click here to log in</a>
+    {% endif %}

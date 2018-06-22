@@ -7,7 +7,7 @@
 <head>
     {% load static %}
     <link rel = "stylesheet" type="text/css" href = "{% static 'css/chatroom.css' %}">
-    {% if user.username != username  %}
+    {% if user.username == username  %}
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <meta charset="UTF-8">
@@ -39,7 +39,7 @@
 </form>
 
 
-<a href="/"> Log out </a>
+<a href="/accounts/logout/"> Log out </a>
 {% else %}
         <h4>You are not logged in as user {{ username }}, you can't see this page.</h4>
         <a href="{% url 'index' %}">Click here to log in</a>
