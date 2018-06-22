@@ -2,26 +2,11 @@
 <html lang="en">
 
 
-<style>
-    #messageBorder {
-        width: 500px;
-        height: 600px;
-        border: 15px solid #152780;
-        padding: 15px;
-        margin: 25px;
-        left:100%;
-    }
-    #messageBorder {
-        overflow-y: scroll;
-        overflow-x: hidden;
-        display: flex;
-        flex-direction: column-reverse;
-    }
-</style>
 
 
 <head>
     {% load static %}
+    <link rel = "stylesheet" type="text/css" href = "{% static 'css/chatroom.css' %}">
     {% if user.username != username  %}
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
