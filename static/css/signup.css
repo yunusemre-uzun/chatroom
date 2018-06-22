@@ -1,0 +1,29 @@
+
+#signup{
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    border-radius: 25px;
+    border: #c4d1d5 solid 1px;
+    width: 470px; /* this is needed */
+    height: 400px; /* this is needed */
+    padding: 10px; /* this is for styling only */
+    background: #fef9ff; /* this is for styling only */
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    position: absolute; /* this is needed */
+    margin: auto; /* this is needed */
+    left: 0; /* this is needed */
+    right: 0; /* this is needed */
+    top: 0; /* this is needed */
+    bottom: 0; /* this is needed */
+}
+
+#signupForm{
+    text-align:right;
+    padding-right:40px;
+}
+body, html {
+height: 100%;
+}
+
+

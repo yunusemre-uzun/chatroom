@@ -1,0 +1,50 @@
+
+.page-header{
+    background-color: #096388;
+    border: 20px solid #096388;
+    color: white;
+    font-family: Impact, Charcoal, sans-serif;
+    font-style: oblique;
+    font-size: 150%;
+
+}
+.h2{
+    font-style: oblique;
+    color:darkblue;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+#sign_in:hover{
+    color: #066973;
+}
+
+#sign_up:hover{
+    color: #066973;
+}
+
+#friends:hover{
+    color: #066973;
+}
+
+#logout:hover{
+    color: #066973;
+}
+#sign{
+    text-align: center;
+
+    border-radius: 25px;
+    border: #c4d1d5 solid 1px;
+    width: 400px; /* this is needed */
+    height: 250px; /* this is needed */
+    padding: 10px; /* this is for styling only */
+    background: #fef9ff; /* this is for styling only */
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    position: absolute; /* this is needed */
+    margin: auto; /* this is needed */
+    left: 0; /* this is needed */
+    right: 0; /* this is needed */
+    top: 0; /* this is needed */
+    bottom: 0; /* this is needed */
+}
+
+
