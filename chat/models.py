@@ -16,10 +16,7 @@ class MyUser(User):
         except:
             print("User does not exist")
             return
-        if len(self.friend_list)==2:
-            self.friend_list = ":" + username + "."
-        else:
-            self.friend_list =  self.friend_list[0:len(self.friend_list)-1] + ":" + username + "."
+        self.friend_list = self.friend_list[0:len(self.friend_list)-1] + ":" + username + "."
         self.save()
     def remove_friend(self,username):
         if self.isFriend(username):
@@ -29,6 +26,7 @@ class MyUser(User):
             for i in range(len(list_of_friends)):
                 new_friend_list = new_friend_list + list_of_friends[i]
             self.friend_list = new_friend_list + "."
+            self.save()
         else:
             print("User is not in your friend list")
             return
@@ -50,3 +48,46 @@ class Message(models.Model):
     date = models.DateTimeField('date wrote')
 
 
+"""
+def add_friend(username):
+    if(Friends.objects.filter(username = self.username).count()==1):
+        q = Friends.objects.get(username = self.username)
+        if(self.isFriend(username)):
+            return
+        try:
+            MyUser.objects.get(username=username)
+        except:
+            print("User does not exist")
+            return
+        if len(self.friend_list)==2:
+            self.friend_list = ":" + username + "."
+        else:
+            self.friend_list =  self.friend_list[0:len(self.friend_list)-1] + ":" + username + "."
+        self.save()
+def remove_friend(self,username):
+        if self.isFriend(username):
+            list_of_friends=self.friend_list[0:len(self.friend_list)-1].split(':')
+            list_of_friends.remove(username)
+            new_friend_list = ":"
+            for i in range(len(list_of_friends)):
+                new_friend_list = new_friend_list + list_of_friends[i]
+            self.friend_list = new_friend_list + "."
+        else:
+            print("User is not in your friend list")
+            return
+    def isFriend(self,username):
+        list_of_friends=self.friend_list[0:len(self.friend_list)-1].split(':')
+        if username in list_of_friends:
+            return True
+        else:
+            return False
+User.myMethod = func
+User.myMethod = func
+User.myMethod = func
+
+
+class Friends(models.Model):
+    username = models.CharField(max_length=150)
+    friend_list = models.CharField(max_length=max_number_of_friends*151)
+        
+"""

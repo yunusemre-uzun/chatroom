@@ -45,7 +45,6 @@ class ChatView(View):
         receiver = kwargs['receiver']
         form = MessageForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-            print('Hello')
             user = MyUser.objects.get(username=username)
             receiver = MyUser.objects.get(username = receiver)
             new_message = form.cleaned_data['new_message']
@@ -111,11 +110,11 @@ class FriendView(View):
             friend_name=str(form.cleaned_data['username'])
             friend = MyUser.objects.get(username=friend_name)
             if friend in friends_list:
-                return HttpResponseRedirect(reverse('chat:friend',args=(username,)))
+                return HttpResponseRedirect(reverse('chat:friend', args=[username]))
             else:
                 myuser.add_friend(friend_name)
                 friend.add_friend(username)
-                return HttpResponseRedirect(reverse('chat:friend',args=(username,)))
+                return HttpResponseRedirect(reverse('chat:friend', args=[username]))
         return render(request,'chat/friends.html',{'flist':[username]})
 
 

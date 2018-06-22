@@ -1,0 +1,14 @@
+<title>
+        Chatwork
+</title>
+{% if user.username == "" %}
+<body>
+    <a href="/accounts/login/">Sign in</a>
+    <a href="/registration/signup/">Sign up</a>
+</body>
+
+{% else %}
+    <p>You have logged in as {{user.username}}</p>
+    <a href="user/{{username}}/friends/">Click to connect with your friends</a>
+    <a href="/accounts/logout/">Log out</a>
+{% endif %}
