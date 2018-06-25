@@ -7,7 +7,6 @@ function refresh() {
         dataType : 'html',
         timeout : 30000,
         success: function(data){
-
             $('#messages').html(data);
         }
     });

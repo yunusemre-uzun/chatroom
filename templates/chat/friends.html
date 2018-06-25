@@ -1,50 +1,14 @@
-<!--
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <link rel = "stylesheet" type="text/css" href = "{% static 'css/friends.css' %}">
-    <meta charset="UTF-8">
-    {% if user.username == username  %}
-    <title>Chatroom</title>
-</head>
-<body>
-    <script src= "{% static 'script/friends.js' %}"></script>
-    <h2>Friends</h2>
-    <div id = "friendBorder">
-            <div id = "friends">
-                    {% if flist %}
-                        {% for tuple in flist %}
-                            <li> <a href="/user/{{username}}/chat/{{ tuple.0 }}"> {{ tuple.0 }}({{ tuple.1 }}) </a></li>
-                        {% endfor %}
-                    
-                    {% else %}
-                    <p>No friends available.</p>
-                    <a href="{{username}}/chat"> Clict to enter general server </a>
-                    {% endif %}
-            </div>
-        </div>
-    <form action="" method="post">
-        {% csrf_token %}
-        {{form}}
-        <input type="submit" value="Add">
-    </form>
-    <a href="/accounts/logout/"> Log out </a>
-    {% else %}
-        <h4>You are not logged in as user {{ username }}, you can't see this page.</h4>
-        <a href="{% url 'index' %}">Click here to log in</a>
-    {% endif %}
-</body>
-</html>
---> 
-<!DOCTYPE html>
+{% load static %}
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <html>
 <title>{{user.username}}</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+<link rel = "stylesheet" type="text/css" href = "{% static 'css/friends.css' %}">
 <style>
 body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
 body {font-size:16px;}
@@ -112,83 +76,12 @@ body {font-size:16px;}
         #tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
         #add_tab { cursor: pointer; }
         </style>
-        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script>
-        $( function() {
-            var tabTitle = $( "#tab_title" ),
-            tabContent = $("#tab_content"),
-            tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>",
-            tabCounter = 2;
-        
-            var tabs = $( "#tabs" ).tabs();
-        
-            // Modal dialog init: custom buttons and a "close" callback resetting the form inside
-            var dialog = $( "#dialog" ).dialog({
-            autoOpen: false,
-            modal: true,
-            buttons: {
-                Add: function() {
-                addTab();
-                $( this ).dialog( "close" );
-                },
-                Cancel: function() {
-                $( this ).dialog( "close" );
-                }
-            },
-            close: function() {
-                form[ 0 ].reset();
-            }
-            });
-        
-            // AddTab form: calls addTab function on submit and closes the dialog
-            var form = dialog.find( "form" ).on( "submit", function( event ) {
-            addTab();
-            dialog.dialog( "close" );
-            event.preventDefault();
-            });
-        
-            // Actual addTab function: adds new tab using the input from the form above
-            function addTab() {
-            var label = tabTitle.val() || "Tab " + tabCounter,
-                id = "tabs-" + tabCounter,
-                li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) ),
-                tabContentHtml = tabContent.val() || "Tab " + tabCounter + " content.";
-        
-            tabs.find( ".ui-tabs-nav" ).append( li );
-            tabs.append( "<div id='" + id + "'><p>" + tabContentHtml + "</p></div>" );
-            tabs.tabs( "refresh" );
-            tabCounter++;
-            }
-        
-            // AddTab button: just opens the dialog
-            $( "#add_tab" )
-            .button()
-            .on( "click", function() {
-                dialog.dialog( "open" );
-            });
-        
-            // Close icon: removing the tab on click
-            tabs.on( "click", "span.ui-icon-close", function() {
-            var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
-            $( "#" + panelId ).remove();
-            tabs.tabs( "refresh" );
-            });
-        
-            tabs.on( "keyup", function( event ) {
-            if ( event.altKey && event.keyCode === $.ui.keyCode.BACKSPACE ) {
-                var panelId = tabs.find( ".ui-tabs-active" ).remove().attr( "aria-controls" );
-                $( "#" + panelId ).remove();
-                tabs.tabs( "refresh" );
-            }
-            });
-        } );
-        </script>
         </head>
         <body>
         
         <div id="dialog" title="Tab data">
         <form>
+            {% csrf_token %}
             <fieldset class="ui-helper-reset">
                 <select name="tab_title" id="tab_title">
                     {% for tuple in flist %}
@@ -198,43 +91,13 @@ body {font-size:16px;}
             </fieldset>
         </form>
         </div>
-        
         <button id="add_tab">Add Tab</button>
-        
         <div id="tabs">
-        <ul>
-            <li><a href="#tabs-1">Nunc tincidunt</a> <span class="ui-icon ui-icon-close" role="presentation">Remove Tab</span></li>
-        </ul>
-        <div id="tabs-1">
-            <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
         </div>
-        </div>
-        
-        
         </body>
   </div>
 <!-- End page content -->
 </div>
-<script>
-// Script to open and close sidebar
-function w3_open() {
-    document.getElementById("mySidebar").style.display = "block";
-    document.getElementById("myOverlay").style.display = "block";
-}
- 
-function w3_close() {
-    document.getElementById("mySidebar").style.display = "none";
-    document.getElementById("myOverlay").style.display = "none";
-}
-
-// Modal Image Gallery
-function onClick(element) {
-  document.getElementById("img01").src = element.src;
-  document.getElementById("modal01").style.display = "block";
-  var captionText = document.getElementById("caption");
-  captionText.innerHTML = element.alt;
-}
-</script>
-
 </body>
 </html>
+<script src= "{% static 'script/friends.js' %}"></script>
