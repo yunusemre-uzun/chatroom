@@ -1,4 +1,4 @@
-console.log('open');
+console.log('open2');
 
 function refresh() {
     console.log("refresh");
