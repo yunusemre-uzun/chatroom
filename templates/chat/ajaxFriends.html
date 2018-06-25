@@ -12,5 +12,15 @@
     <!--<a href="{{username}}/chat"> Clict to enter general server </a>-->
     {% endif %}
 </div>
+<div class="popup" onclick="myFunction()">
+    {% if new_messages %}
+        {% if c_key %}
+            <span class="popuptext" id="myPopup">{{new_messages}} new messages from {{c_person}}</span>
+        {% else %}
+            <span class="popuptext" id="myPopup">{{new_messages}} new messages from {{number_of_channels}} people</span>
+        {% endif %}
+    {% else %}
+    {% endif %}
+</div> 
 
 <script src= "{% static 'script/friends.js' %}"></script>

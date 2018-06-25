@@ -25,7 +25,6 @@ class IndexView(View):
 
 class ChatView(View):
     def get(self,request, **kwargs):
-
         username = kwargs['username']
         receiver_name = kwargs['receiver']
         user = MyUser.objects.get(username= username)
@@ -34,16 +33,18 @@ class ChatView(View):
         message_list = Message.objects.filter(Q(sender = user.id,receiver = receiver.id) | Q(sender = receiver.id, receiver = user.id)).order_by('-date')[::-1]
         form = MessageForm()
         context = {'roomName':'','messageList':message_list,'form':form, 'username':username ,'receiver':receiver}
-        #change the unread messages from {{receivername}} to {{username}} in database to read(coming messages)
+        #change the unread messages status from {{receivername}} to {{username}} in database to read(coming messages)
         change_message_list = list(Message.objects.filter(sender=receiver.id,receiver=user.id,is_read=False))
         print(change_message_list)
         for message in change_message_list:
             message.is_read=True
             message.save()
-       # if (request.is_ajax()): #if the request is ajax, only renders the message part
-        #    context = {'messageList': message_list }
-         #   return render(request, 'chat/ajaxChatroom.html', context)
-
+        #user.number_of_unread_messages -= (Message.objects.filter(Q(sender = user.id,receiver = receiver.id))).count()
+        user.save()
+        ##############################################
+        #if (request.is_ajax()): #if the request is ajax, only renders the message part
+         #   context = {'messageList': message_list }
+          #  return render(request, 'chat/ajaxChatroom.html', context)
         return render(request,'chat/chatroom.html',context)
 
     def post(self, request, **kwargs):
@@ -56,8 +57,9 @@ class ChatView(View):
             new_message = form.cleaned_data['new_message']
             message_object = Message(text=new_message,sender= user,receiver = receiver ,date=timezone.now())
             message_object.save()
-        return HttpResponseRedirect(reverse('chat:friend', args = [username , receiverName]))
-
+            #receiver.number_of_unread_messages += 1
+            receiver.save()
+            return HttpResponseRedirect(reverse('chat:friend', args = [username , receiverName]))
 
 class UsernameView(View):
     def post(self,request):
@@ -103,10 +105,12 @@ class FriendView(View):
         form = AddFriendForm(request.POST)
         user = MyUser.objects.get(username=username)
         friends_list = user.friend_list[1:len(user.friend_list)-1].split(':')
+        message_list = Message.objects.filter(Q(sender = user.id) | Q(receiver = user.id)).order_by('-date')[::-1]
         friends_object_list=[]
-        for friend in friends_list:
-            friends_object_list.append(MyUser.objects.get(username=friend))
-        friends_object_list=list(friends_object_list)
+        if (not friends_list==['']):
+            for friend in friends_list:
+                friends_object_list.append(MyUser.objects.get(username=friend))
+            friends_object_list=list(friends_object_list)
         ret = [] #the list to send html
         if friends_list[0]=='' :
             friends_list = []
@@ -115,11 +119,29 @@ class FriendView(View):
         for friend in friends_list:
             friend_object = MyUser.objects.get(username=friend)
             unread_message_count_list.append((Message.objects.filter(sender=friend_object.id,receiver=user.id,is_read=False).count()))
+        new_messages=0
+        number_of_channels = 0
+        c_key = 0
+        c_person = ''
+        for i in unread_message_count_list :
+            new_messages += i
+            if(i>0):
+                number_of_channels += 1
+        if(number_of_channels==1):
+            c_key = 1
         #create the list of tuples which [(friend_name,unread_message_count)]
         for i in range(len(friends_list)):
             ret.append((friends_object_list[i],unread_message_count_list[i]))
+        if(c_key):
+            for i in ret :
+                if(i[1]>0):
+                    c_person = i[0]
         ####################################
-        context = {'user':user,'flist':ret,'message_count':unread_message_count_list,'username':username,'form':form,'receiver':receiver}
+        context = {'user':user,'flist':ret,'message_count':unread_message_count_list,'username':username,
+                    'form':form,'new_messages':new_messages,'number_of_channels':number_of_channels,
+                    'c_key':c_key, 'c_person':c_person,'receiver':receiver}
+        if (request.is_ajax()): #if the request is ajax, only renders the friend list part
+            return render(request, 'chat/ajaxFriends.html', context)
         return render(request,'chat/friends.html',context)
 
 

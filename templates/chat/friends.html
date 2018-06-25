@@ -1,8 +1,8 @@
 
-
 <!DOCTYPE html>
-
-
+{% load static %}
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <html>
 {% load static %}
 <title>{{user.username}}</title>
@@ -10,6 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+<link rel = "stylesheet" type="text/css" href = "{% static 'css/friends.css' %}">
 <style>
 body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
 body {font-size:16px;}
@@ -199,11 +200,13 @@ body {font-size:16px;}
 
 
         </script>
+
         </head>
         <body>
 
         <div id="dialog" title="Tab data">
         <form>
+            {% csrf_token %}
             <fieldset class="ui-helper-reset">
                 <select name="tab_title" id="tab_title">
                     {% for tuple in flist %}
@@ -223,30 +226,10 @@ body {font-size:16px;}
 
 </div>
 
-        </body>
   </div>
 <!-- End page content -->
 </div>
-<script>
-// Script to open and close sidebar
-function w3_open() {
-    document.getElementById("mySidebar").style.display = "block";
-    document.getElementById("myOverlay").style.display = "block";
-}
-
-function w3_close() {
-    document.getElementById("mySidebar").style.display = "none";
-    document.getElementById("myOverlay").style.display = "none";
-}
-
-// Modal Image Gallery
-function onClick(element) {
-  document.getElementById("img01").src = element.src;
-  document.getElementById("modal01").style.display = "block";
-  var captionText = document.getElementById("caption");
-  captionText.innerHTML = element.alt;
-}
-</script>
 
 </body>
 </html>
+<script src= "{% static 'script/friends.js' %}"></script>
