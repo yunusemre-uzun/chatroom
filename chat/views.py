@@ -39,7 +39,6 @@ class ChatView(View):
         for message in change_message_list:
             message.is_read=True
             message.save()
-        #user.number_of_unread_messages -= (Message.objects.filter(Q(sender = user.id,receiver = receiver.id))).count()
         user.save()
         ##############################################
         #if (request.is_ajax()): #if the request is ajax, only renders the message part
@@ -57,8 +56,9 @@ class ChatView(View):
             new_message = form.cleaned_data['new_message']
             message_object = Message(text=new_message,sender= user,receiver = receiver ,date=timezone.now())
             message_object.save()
-            #receiver.number_of_unread_messages += 1
             receiver.save()
+            if (request.is_ajax()):  # if the request is ajax, only renders the message part
+                return self.get(request , username= username , request= request)
             return HttpResponseRedirect(reverse('chat:friend', args = [username , receiverName]))
 
 class UsernameView(View):
@@ -140,8 +140,6 @@ class FriendView(View):
         context = {'user':user,'flist':ret,'message_count':unread_message_count_list,'username':username,
                     'form':form,'new_messages':new_messages,'number_of_channels':number_of_channels,
                     'c_key':c_key, 'c_person':c_person,'receiver':receiver}
-        if (request.is_ajax()): #if the request is ajax, only renders the friend list part
-            return render(request, 'chat/ajaxFriends.html', context)
         return render(request,'chat/friends.html',context)
 
 

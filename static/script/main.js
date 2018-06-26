@@ -4,6 +4,8 @@ function refresh() {
     console.log("refresh1");
     $.ajax({
         url: '',
+        context:this,
+        async:true;
         dataType : 'html',
         timeout : 30000,
         success: function(data){

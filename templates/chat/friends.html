@@ -3,6 +3,7 @@
 {% load static %}
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ <script src="{% static 'script/js.cookie.js' %}"></script>
 <html>
 {% load static %}
 <title>{{user.username}}</title>
@@ -69,7 +70,7 @@ body {font-size:16px;}
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>jQuery UI Tabs - Simple manipulation</title>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <script src="{% static 'script/js.cookie.js' %}"></script>
+
         <style>
         #dialog label, #dialog input { display:block; }
         #dialog label { margin-top: 0.5em; }
@@ -78,8 +79,6 @@ body {font-size:16px;}
         #tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
         #add_tab { cursor: pointer; }
         </style>
-        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
         <script>
 
@@ -93,25 +92,23 @@ body {font-size:16px;}
       }
     });
           } );
+
         $( function() {
             var tabTitle = $( "#tab_title" ),
             tabContent = $("#tab_content"),
             tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>",
             tabCounter = 2;
-
-            var tabs = $( "#tabs" ).tabs({ cookie: { expires: 100 } });
+            var tabs = $( "#tabs" ).tabs();
 
             // Modal dialog init: custom buttons and a "close" callback resetting the form inside
             var dialog = $( "#dialog" ).dialog({
             autoOpen: false,
             modal: true,
+            async : true,
             buttons: {
-                Add: function() {
-                addTab();
-                $( this ).dialog( "close" );
-                },
-                Cancel: function() {
-                $( this ).dialog( "close" );
+                Add: function () {
+                    addTab();
+                     $("#dialog").dialog('close');
                 }
             },
             close: function() {
@@ -139,10 +136,11 @@ body {font-size:16px;}
                 }
                 else if(typeof(prevLabels)=="undefined"){
                     Cookies.set('labels',label);
+
                 }
-                tabs.find( ".ui-tabs-nav" ).append( li );
-                tabs.tabs( "refresh" );
-                tabCounter++;
+                    tabs.find( ".ui-tabs-nav" ).append( li );
+                    tabs.tabs( "refresh" );
+                    tabCounter++;
             }
 
             function addCookieTab() {
@@ -162,18 +160,15 @@ body {font-size:16px;}
                     }
                 }
                 console.log({{ receiver }});
-                $("#tabs").tabs({active:(labelList.indexOf({{ receiver }})-1)});
+                $("#tabs").tabs({active:(labelList.indexOf({{ receiver }}))});
 
             }
 
 
             $( document ).ready(function() {
-
-                var x = Cookies.get('labels');
-                console.log("Hello");
-                console.log(x);
-
                 addCookieTab();
+
+
             });
             // AddTab button: just opens the dialog
             $( "#add_tab" )
@@ -226,10 +221,14 @@ body {font-size:16px;}
 
 </div>
 
-  </div>
 <!-- End page content -->
 </div>
 
 </body>
-</html>
+
 <script src= "{% static 'script/friends.js' %}"></script>
+</html>
+
+
+
+

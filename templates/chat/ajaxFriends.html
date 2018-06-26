@@ -1,6 +1,5 @@
 {% load static %}
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <div id = "friends">
     {% if flist %}
@@ -9,7 +8,6 @@
         {% endfor %}
     {% else %}
     <p>No friends available.</p>
-    <!--<a href="{{username}}/chat"> Clict to enter general server </a>-->
     {% endif %}
 </div>
 <div class="popup" onclick="myFunction()">
@@ -21,6 +19,5 @@
         {% endif %}
     {% else %}
     {% endif %}
-</div> 
+</div>
 
-<script src= "{% static 'script/friends.js' %}"></script>
