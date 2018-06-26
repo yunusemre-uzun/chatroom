@@ -39,7 +39,6 @@ class ChatView(View):
         for message in change_message_list:
             message.is_read=True
             message.save()
-        user.number_of_unread_messages -= (Message.objects.filter(Q(sender = user.id,receiver = receiver.id))).count()
         user.save()
         ##############################################
         if (request.is_ajax()): #if the request is ajax, only renders the message part
@@ -57,7 +56,6 @@ class ChatView(View):
             new_message = form.cleaned_data['new_message']
             message_object = Message(text=new_message,sender= user,receiver = receiver ,date=timezone.now())
             message_object.save()
-            receiver.number_of_unread_messages += 1
             receiver.save()
         return self.get(request, username = username , receiver = receiver)
 

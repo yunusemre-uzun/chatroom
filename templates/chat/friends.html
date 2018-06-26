@@ -67,7 +67,6 @@ body {font-size:16px;}
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>jQuery UI Tabs - Simple manipulation</title>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <link rel="stylesheet" href="/resources/demos/style.css">
         <style>
         #dialog label, #dialog input { display:block; }
         #dialog label { margin-top: 0.5em; }
@@ -91,7 +90,7 @@ body {font-size:16px;}
             </fieldset>
         </form>
         </div>
-        <button id="add_tab">Add Tab</button>
+        <button onclick="addTab({{username}})" id="add_tab">Add Chat</button>
         <div id="tabs">
         </div>
         </body>
@@ -101,3 +100,22 @@ body {font-size:16px;}
 </body>
 </html>
 <script src= "{% static 'script/friends.js' %}"></script>
+<script>
+// Actual addTab function: adds new tab using the input from the form above
+function addTab(username) {
+    var label = tabTitle.val() || "Error",
+        id = "tabs-" + tabCounter,
+        varHref = "/user/"+  username + "/chat/"+label+"/",
+        li = $( tabTemplate.replace( /#\{href\}/g, varHref ).replace( /#\{label\}/g, label ) );
+    prevLabels = Cookies.get('labels');
+    if(typeof(prevLabels)!="undefined" && !prevLabels.includes(label) ){
+        Cookies.set('labels',prevLabels + ":" + label);
+    }
+    else if(typeof(prevLabels)=="undefined"){
+        Cookies.set('labels',label);
+    }
+    tabs.find( ".ui-tabs-nav" ).append( li );
+    tabs.tabs( "refresh" );
+    tabCounter++;
+}
+</script>
