@@ -3,7 +3,7 @@
 {% load static %}
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
- <script src="{% static 'script/js.cookie.js' %}"></script>
+<script src="{% static 'script/js.cookie.js' %}"></script>
 <html>
 {% load static %}
 <title>{{user.username}}</title>
@@ -19,7 +19,9 @@ body {font-size:16px;}
 .w3-half img:hover{opacity:1}
 </style>
 <body>
-
+<script>
+    var username = "{{username}}";
+</script>
 <!-- Sidebar/menu -->
 <nav class="w3-sidebar w3-blue w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:400px;font-weight:bold;" id="mySidebar"><br>
   <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:25px">Close Menu</a>
@@ -29,9 +31,11 @@ body {font-size:16px;}
   <div class="w3-bar-block">
         <div id = "friends">
             {% if flist %}
+            <span id="jj" >
                 {% for tuple in flist %}
-                    <li> <a href="/user/{{username}}/chat/{{ tuple.0 }}"> {{ tuple.0 }}(<span id="jj">{{ tuple.1 }}</span>) </a></li>
+                    <li> <a href="/user/{{username}}/chat/{{ tuple.0 }}"> {{ tuple.0 }}({{ tuple.1 }}) </a></li>
                 {% endfor %}
+            </span>
             {% else %}
             <p>No friends available.</p>
             <a href="{{username}}/chat"> Clict to enter general server </a>
@@ -127,7 +131,7 @@ body {font-size:16px;}
                 function addTab() {
                     var label = tabTitle.val() || "Error",
                         id = "tabs-" + tabCounter,
-                        varHref = "/user/"+ {{ username }}+ "/chat/"+label+"/",
+                        varHref = "/user/{{ username }}/chat/"+label+"/",
                         li = $( tabTemplate.replace( /#\{href\}/g, varHref ).replace( /#\{label\}/g, label ) );
                     prevLabels = Cookies.get('labels');
                     if(typeof(prevLabels)!="undefined" && !prevLabels.includes(label) ){
@@ -180,7 +184,7 @@ body {font-size:16px;}
                         labelList = labels.split(":");
                         console.log(labelList);
                         for (i = 0; i < labelList.length; i++) {
-                            varHref = "/user/" + {{ username }}+"/chat/" + labelList[i] + "/";
+                            varHref = "/user/{{username}}/chat/"+labelList[i]+"/";
                             li = $( tabTemplate.replace( /#\{href\}/g, varHref ).replace( /#\{label\}/g, labelList[i] ) );
                             tabs.find( ".ui-tabs-nav" ).append( li );
                             tabs.tabs( "refresh" );
@@ -188,8 +192,10 @@ body {font-size:16px;}
                             console.log(labelList[i]);
                         }
                     }
-                    console.log({{ receiver }});
-                    $("#tabs").tabs({active:(labelList.indexOf({{ receiver }}))});
+                    if("{{ receiver }}" !== "None"){
+                        $("#tabs").tabs({active:(labelList.indexOf( "{{receiver}}" ))});
+
+                    }
 
                 }
 
