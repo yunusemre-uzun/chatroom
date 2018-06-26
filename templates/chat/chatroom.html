@@ -3,14 +3,32 @@
 <html lang="en">
 <head>
     {% load static %}
+
     <link rel = "stylesheet" type="text/css" href = "{% static 'css/chatroom.css' %}">
     {% if user.username == username  %}
-  <!--  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src= "{% static 'script/main.js' %}"></script>-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <title>Chatters</title>
     <h4>Chat Room of {{ username }} and {{ receiver }}</h4>
+<!--
+        <script>
+            function refresh(url) {
+                console.log("refresh1");
+                $.ajax({
+                    url: url,
+                    context:this,
+                    dataType : 'html',
+                    timeout : 30000,
+                    success: function(data){
+                        $('#messages').html(data);
+                    }
+                });
 
+            }
+            setTimeout(refresh('/user/chatroom/{{username }}/{{ receiver }}'),2000);
+
+        </script>
+-->
 </head>
 
 <body>

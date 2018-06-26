@@ -189,8 +189,10 @@ body {font-size:16px;}
                             console.log(labelList[i]);
                         }
                     }
-                    console.log({{ receiver }});
-                    $("#tabs").tabs({active:(labelList.indexOf({{ receiver }}))});
+                    if("{{ receiver }}" !== "None"){
+                        $("#tabs").tabs({active:(labelList.indexOf({{ receiver }}))});
+
+                    }
 
                 }
 
