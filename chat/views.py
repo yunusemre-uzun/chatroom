@@ -164,7 +164,6 @@ class FriendView(View):
 
 
     def post(self,request, **kwargs):
-
         form = AddFriendForm(request.POST)
         username = kwargs['username']
         receiver = kwargs.get('receiver', "None")
@@ -184,4 +183,25 @@ class FriendView(View):
 
 class FriendView2(View):
     def get(self,request, **kwargs):
-        return HttpResponse('2')
+        username = kwargs['username']
+        form = AddFriendForm(request.POST)
+        user = MyUser.objects.get(username=username)
+        friends_list = user.friend_list[1:len(user.friend_list)-1].split(':')
+        message_list = Message.objects.filter(Q(sender = user.id) | Q(receiver = user.id)).order_by('-date')[::-1]
+        friends_object_list=[]
+        if (not friends_list==['']):
+            for friend in friends_list:
+                friends_object_list.append(MyUser.objects.get(username=friend))
+            friends_object_list=list(friends_object_list)
+        ret = [] #the list to send html
+        if friends_list[0]=='' :
+            friends_list = []
+        #find the number of unread messages for each friend in friendlist
+        unread_message_count_list = []
+        for friend in friends_list:
+            friend_object = MyUser.objects.get(username=friend)
+            unread_message_count_list.append((Message.objects.filter(sender=friend_object.id,receiver=user.id,is_read=False).count()))
+        for i in range(len(friends_list)):
+            ret.append((friends_object_list[i],unread_message_count_list[i]))
+        context = {'flist':ret,'username':username}
+        return render(request,'chat/ajaxFriends.html',context)

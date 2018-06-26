@@ -2,16 +2,16 @@ console.log('open3');
 
 function refresh() {
     $.ajax({
-        url: '/user/test/',
+        url: '/user/ajaxFriends/'+username,
         async: true,
         dataType : 'html',
         timeout : 30000,
         success: function(data){
-            console.log(data);
+            //console.log(data);
             $('#jj').html(data);
         }
     });
-    console.log("refresh");
+    console.log("refresh friendzone");
 
 }
 setTimeout(refresh,3000);

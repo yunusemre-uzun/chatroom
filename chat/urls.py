@@ -13,6 +13,5 @@ urlpatterns = [
     path('<str:username>/friends/',views.FriendView.as_view(),name='friend'),
     path('<str:username>/friends/<str:receiverName>/', views.FriendView.as_view(), name='friend'),
     path('chatroom/<str:username>/<str:receiver>/', views.AjaxChatView.as_view(), name='ajax_chat'),
-
-    path('test/', views.FriendView2.as_view(), name='friend'),
+    path('ajaxFriends/<str:username>', views.FriendView2.as_view(), name='friend'),
 ]
