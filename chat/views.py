@@ -2,7 +2,7 @@ import json
 
 from  django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import datetime
 import time
 
@@ -41,24 +41,25 @@ class ChatView(View):
             message.save()
         user.save()
         ##############################################
-        if (request.is_ajax()): #if the request is ajax, only renders the message part
-            context = {'messageList': message_list }
-            return render(request, 'chat/ajaxChatroom.html', context)
+        #if (request.is_ajax()): #if the request is ajax, only renders the message part
+         #   context = {'messageList': message_list }
+          #  return render(request, 'chat/ajaxChatroom.html', context)
         return render(request,'chat/chatroom.html',context)
 
     def post(self, request, **kwargs):
         username = kwargs['username']
-        receiver = kwargs['receiver']
+        receiverName = kwargs['receiver']
         form = MessageForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             user = MyUser.objects.get(username=username)
-            receiver = MyUser.objects.get(username = receiver)
+            receiver = MyUser.objects.get(username = receiverName)
             new_message = form.cleaned_data['new_message']
             message_object = Message(text=new_message,sender= user,receiver = receiver ,date=timezone.now())
             message_object.save()
             receiver.save()
-        return self.get(request, username = username , receiver = receiver)
-
+            if (request.is_ajax()):  # if the request is ajax, only renders the message part
+                return self.get(request , username= username , request= request)
+            return HttpResponseRedirect(reverse('chat:friend', args = [username , receiverName]))
 
 class UsernameView(View):
     def post(self,request):
@@ -100,6 +101,7 @@ class SignUpView(View):
 class FriendView(View):
     def get(self,request, **kwargs):
         username = kwargs['username']
+        receiver = kwargs.get('receiverName' , "None")
         form = AddFriendForm(request.POST)
         user = MyUser.objects.get(username=username)
         friends_list = user.friend_list[1:len(user.friend_list)-1].split(':')
@@ -137,13 +139,15 @@ class FriendView(View):
         ####################################
         context = {'user':user,'flist':ret,'message_count':unread_message_count_list,'username':username,
                     'form':form,'new_messages':new_messages,'number_of_channels':number_of_channels,
-                    'c_key':c_key, 'c_person':c_person}
-        if (request.is_ajax()): #if the request is ajax, only renders the friend list part
-            return render(request, 'chat/ajaxFriends.html', context)
+                    'c_key':c_key, 'c_person':c_person,'receiver':receiver}
         return render(request,'chat/friends.html',context)
+
+
     def post(self,request, **kwargs):
+
         form = AddFriendForm(request.POST)
         username = kwargs['username']
+        receiver = kwargs.get('receiver', "None")
         myuser = MyUser.objects.get(username=username)
         friends_list = (myuser.friend_list)[1:len(myuser.friend_list)-1:].split(',')
         if form.is_valid():

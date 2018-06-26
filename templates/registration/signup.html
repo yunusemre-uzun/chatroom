@@ -1,7 +1,45 @@
-<!-- templates/registration/signup.html -->
-<h2>Login</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Login</button>
-</form>
+<!-- templates/registration/login.html -->
+{% load static %}
+
+
+<style>
+
+.bg {
+    background-image: url("{% static "images/background.png" %}");
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #096388;
+} /*adds background*/
+
+</style>
+
+<link rel = "stylesheet" type="text/css" href = "{% static 'css/signup.css' %}">
+
+<div class = "bg">
+    <head>
+
+    <link rel = "stylesheet" type="text/css" href = "{% static 'css/index.css' %}">
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <div class="page-header">
+        <h1>Chattaton<span class="glyphicon glyphicon-send"></span> </h1>
+    </div>
+</head>
+    <body>
+        <div id = "signup">
+            <h1 style="font-size: 230%">Signup</h1>
+
+            <form method="post" style="font-size: 140%" id = "signupForm">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class = "btn btn-primary btn-lg" type="submit" style="padding-right: 93px;padding-left: 93px">Login</button>
+            </form>
+
+        </div>
+    </body>
+
+</div>

@@ -1,31 +1,47 @@
-console.log('open');
+console.log('open3');
 
 function refresh() {
-    console.log("refresh");
     $.ajax({
         url: '',
+        async: true,
         dataType : 'html',
         timeout : 30000,
         success: function(data){
             $('#friends').html(data);
         }
     });
+        console.log("refresh");
+
 }
 setTimeout(refresh,3000);
 // When the user clicks on <div>, open the popup
 function myFunction() {
     var popup = document.getElementById("myPopup");
-    popup.classList.toggle("hide");
+   /*popup.classList.toggle("hide");*/
 }
-setTimeout(myFunction, 0);
+//setTimeout(myFunction, 0);
 
 // Script to open and close sidebar
 function w3_open() {
     document.getElementById("mySidebar").style.display = "block";
     document.getElementById("myOverlay").style.display = "block";
 }
- 
+
 function w3_close() {
     document.getElementById("mySidebar").style.display = "none";
     document.getElementById("myOverlay").style.display = "none";
+<<<<<<< HEAD
 }
+=======
+}
+
+// Modal Image Gallery
+function onClick(element) {
+  document.getElementById("img01").src = element.src;
+  document.getElementById("modal01").style.display = "block";
+  var captionText = document.getElementById("caption");
+  captionText.innerHTML = element.alt;
+}
+
+
+>>>>>>> master
