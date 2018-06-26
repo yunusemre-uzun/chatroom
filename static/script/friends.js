@@ -1,5 +1,3 @@
-console.log('open3');
-
 function refresh() {
     $.ajax({
         url: '/user/ajaxFriends/'+username,

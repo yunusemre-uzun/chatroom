@@ -4,6 +4,7 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="{% static 'script/js.cookie.js' %}"></script>
+<script src="{% static 'script/notification.js' %}"></script>
 <html>
 {% load static %}
 <title>{{user.username}}</title>
@@ -67,6 +68,17 @@ body {font-size:16px;}
     <h1 class="w3-jumbo"><b>Frequently Connected</b></h1>
     <hr style="width:50px;border:5px solid rgb(47, 108, 221)" class="w3-round">
   </div>
+  <div class="popup" onclick="myFunction()" id="popup">
+        {% if new_messages %}
+            {% if c_key %}
+                <span class="popuptext" id="myPopup">{{new_messages}} new messages from {{c_person}}</span>
+            {% else %}
+                <span class="popuptext" id="myPopup">{{new_messages}} new messages from {{number_of_channels}} people</span>
+            {% endif %}
+        {% else %}
+        
+        {% endif %}
+    </div>
 <!-- The Team -->
   <div>
         <head>

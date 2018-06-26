@@ -20,7 +20,7 @@
 }
 /* The actual popup (appears on top) */
 .popup .popuptext {
-    visibility: hidden;
+    visibility: visible;
     width: 400px;
     background-color: rgb(221, 28, 28);
     color: #fff;
@@ -35,5 +35,5 @@
 }
 /* Toggle this class when clicking on the popup container (hide and show the popup) */
 .popup .hide {
-    visibility: visible;
+    visibility: hide;
 }
