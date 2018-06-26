@@ -30,7 +30,7 @@ body {font-size:16px;}
         <div id = "friends">
             {% if flist %}
                 {% for tuple in flist %}
-                    <li> <a href="/user/{{username}}/chat/{{ tuple.0 }}"> {{ tuple.0 }}({{ tuple.1 }}) </a></li>
+                    <li> <a href="/user/{{username}}/chat/{{ tuple.0 }}"> {{ tuple.0 }}(<span id="jj">{{ tuple.1 }}</span>) </a></li>
                 {% endfor %}
             {% else %}
             <p>No friends available.</p>
@@ -125,72 +125,75 @@ body {font-size:16px;}
 
 
             // Actual addTab function: adds new tab using the input from the form above
-            function addTab() {
-                var label = tabTitle.val() || "Error",
-                    id = "tabs-" + tabCounter,
-                    varHref = "/user/"+ {{ username }}+ "/chat/"+label+"/",
-                    li = $( tabTemplate.replace( /#\{href\}/g, varHref ).replace( /#\{label\}/g, label ) );
-                prevLabels = Cookies.get('labels');
-                if(typeof(prevLabels)!="undefined" && !prevLabels.includes(label) ){
-                    Cookies.set('labels',prevLabels + ":" + label);
-                }
-                else if(typeof(prevLabels)=="undefined"){
-                    Cookies.set('labels',label);
+                function addTab() {
+                    var label = tabTitle.val() || "Error",
+                        id = "tabs-" + tabCounter,
+                        varHref = "/user/"+ {{ username }}+ "/chat/"+label+"/",
+                        li = $( tabTemplate.replace( /#\{href\}/g, varHref ).replace( /#\{label\}/g, label ) );
+                    prevLabels = Cookies.get('labels');
+                    if(typeof(prevLabels)!="undefined" && !prevLabels.includes(label) ){
+                        Cookies.set('labels',prevLabels + ":" + label);
+                    }
+                    else if(typeof(prevLabels)=="undefined"){
+                        Cookies.set('labels',label);
 
-                }
-                    tabs.find( ".ui-tabs-nav" ).append( li );
-                    tabs.tabs( "refresh" );
-                    tabCounter++;
-            }
-
-            function addCookieTab() {
-                var labels = Cookies.get('labels'),
-                    id = "tabs-" + tabCounter;
-                var varHref, labelList;
-                if (typeof(labels) != "undefined") {
-                    labelList = labels.split(":");
-                    console.log(labelList);
-                    for (i = 0; i < labelList.length; i++) {
-                        varHref = "/user/" + {{ username }}+"/chat/" + labelList[i] + "/";
-                        li = $( tabTemplate.replace( /#\{href\}/g, varHref ).replace( /#\{label\}/g, labelList[i] ) );
+                    }
                         tabs.find( ".ui-tabs-nav" ).append( li );
                         tabs.tabs( "refresh" );
                         tabCounter++;
-                        console.log(labelList[i]);
-                    }
-                }
-                console.log({{ receiver }});
-                $("#tabs").tabs({active:(labelList.indexOf({{ receiver }}))});
-
             }
+
+
 
 
             $( document ).ready(function() {
                 addCookieTab();
+                            // AddTab button: just opens the dialog
+
+                });
 
 
-            });
-            // AddTab button: just opens the dialog
-            $( "#add_tab" )
-            .button()
-            .on( "click", function() {
-                dialog.dialog( "open" );
-            });
+             $( "#add_tab" ).button().on( "click",
+                function() {
+                    dialog.dialog( "open" );
+                });
 
-            // Close icon: removing the tab on click
-            tabs.on( "click", "span.ui-icon-close", function() {
-            var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
-            $( "#" + panelId ).remove();
-            tabs.tabs( "refresh" );
-            });
+                // Close icon: removing the tab on click
+                tabs.on( "click", "span.ui-icon-close", function() {
+                    var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
+                    $( "#" + panelId ).remove();
+                    tabs.tabs( "refresh" );
+                });
 
-            tabs.on( "keyup", function( event ) {
-            if ( event.altKey && event.keyCode === $.ui.keyCode.BACKSPACE ) {
-                var panelId = tabs.find( ".ui-tabs-active" ).remove().attr( "aria-controls" );
-                $( "#" + panelId ).remove();
-                tabs.tabs( "refresh" );
-            }
-            });
+                tabs.on( "keyup", function( event ) {
+                if ( event.altKey && event.keyCode === $.ui.keyCode.BACKSPACE ) {
+                    var panelId = tabs.find( ".ui-tabs-active" ).remove().attr( "aria-controls" );
+                    $( "#" + panelId ).remove();
+                    tabs.tabs( "refresh" );
+                }
+                });
+
+                function addCookieTab() {
+                    var labels = Cookies.get('labels'),
+                        id = "tabs-" + tabCounter;
+                    var varHref, labelList;
+                    if (typeof(labels) != "undefined") {
+                        labelList = labels.split(":");
+                        console.log(labelList);
+                        for (i = 0; i < labelList.length; i++) {
+                            varHref = "/user/" + {{ username }}+"/chat/" + labelList[i] + "/";
+                            li = $( tabTemplate.replace( /#\{href\}/g, varHref ).replace( /#\{label\}/g, labelList[i] ) );
+                            tabs.find( ".ui-tabs-nav" ).append( li );
+                            tabs.tabs( "refresh" );
+                            tabCounter++;
+                            console.log(labelList[i]);
+                        }
+                    }
+                    console.log({{ receiver }});
+                    $("#tabs").tabs({active:(labelList.indexOf({{ receiver }}))});
+
+                }
+
         } );
 
 
@@ -227,6 +230,8 @@ body {font-size:16px;}
 </body>
 
 <script src= "{% static 'script/friends.js' %}"></script>
+
+
 </html>
 
 
