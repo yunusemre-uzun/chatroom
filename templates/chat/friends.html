@@ -59,13 +59,13 @@ body {font-size:16px;}
 <div class="w3-main" style="margin-left:400px;margin-right:40px">
 
   <!-- Header -->
-  <div class="w3-container" style="margin-top:80px" id="showcase">
-    <h1 class="w3-jumbo"><b>Frequently Connected</b></h1>
-    <hr style="width:50px;border:5px solid rgb(47, 108, 221)" class="w3-round">
-  </div>
+
 <!-- The Team -->
-  <div>
         <head>
+         <div class="w3-container" style="margin-top:20px" id="showcase">
+            <h1 class="w3-half"><b>Frequently Connected</b></h1>
+
+         </div>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>jQuery UI Tabs - Simple manipulation</title>
@@ -128,7 +128,7 @@ body {font-size:16px;}
                 function addTab() {
                     var label = tabTitle.val() || "Error",
                         id = "tabs-" + tabCounter,
-                        varHref = "/user/"+ {{ username }}+ "/chat/"+label+"/",
+                        varHref = "/user/"+ "{{ username }}"+ "/chat/"+label+"/",
                         li = $( tabTemplate.replace( /#\{href\}/g, varHref ).replace( /#\{label\}/g, label ) );
                     prevLabels = Cookies.get('labels');
                     if(typeof(prevLabels)!="undefined" && !prevLabels.includes(label) ){
@@ -221,17 +221,14 @@ body {font-size:16px;}
 
 <div id="tabs">
   <ul>
-
   </ul>
-
 </div>
 
-<!-- End page content -->
-</div>
+<script src= "{% static 'script/friends.js' %}"></script>
 
 </body>
 
-<script src= "{% static 'script/friends.js' %}"></script>
+
 
 
 </html>

@@ -41,8 +41,8 @@ class ChatView(View):
             message.save()
         user.save()
         ##############################################
-        #if (request.is_ajax()): #if the request is ajax, only renders the message part
-         #   context = {'messageList': message_list }
+       # if (request.is_ajax()): #if the request is ajax, only renders the message part
+           # context = {'messageList': message_list }
           #  return render(request, 'chat/ajaxChatroom.html', context)
         return render(request,'chat/chatroom.html',context)
 
@@ -69,7 +69,7 @@ class AjaxChatView(View):
         receiver = MyUser.objects.get(username = receiver_name)
         #filter(Q(..) | Q(..)) allows the usage of or in filter function
         message_list = Message.objects.filter(Q(sender = user.id,receiver = receiver.id) | Q(sender = receiver.id, receiver = user.id)).order_by('-date')[::-1]
-        context = {'messageList':message_list}
+        context = {'messageList':message_list,'username':username ,'receiver':receiver}
         #change the unread messages status from {{receivername}} to {{username}} in database to read(coming messages)
         change_message_list = list(Message.objects.filter(sender=receiver.id,receiver=user.id,is_read=False))
         print(change_message_list)

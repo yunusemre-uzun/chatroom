@@ -3,63 +3,53 @@
 <html lang="en">
 <head>
     {% load static %}
-
-    <link rel = "stylesheet" type="text/css" href = "{% static 'css/chatroom.css' %}">
-    {% if user.username == username  %}
+    <script src="{% static 'script/js.cookie.js' %}"></script>
+    <script src= "{% static 'script/main.js' %}"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel = "stylesheet" type="text/css" href = "{% static 'css/chatroom.css' %}">
+
+    <script>
+        var username = {{ username }};
+        var receiver = {{ receiver }};
+    </script>
+
+{% if user.username == username  %}
+
     <meta charset="UTF-8">
     <title>Chatters</title>
-    <h4>Chat Room of {{ username }} and {{ receiver }}</h4>
-<!--
-        <script>
-            function refresh(url) {
-                console.log("refresh1");
-                $.ajax({
-                    url: url,
-                    context:this,
-                    dataType : 'html',
-                    timeout : 30000,
-                    success: function(data){
-                        $('#messages').html(data);
-                    }
-                });
 
-            }
-            setTimeout(refresh('/user/chatroom/{{username }}/{{ receiver }}'),2000);
 
-        </script>
--->
 </head>
 
 <body>
 
 
 
-<div id = "messageBorder">
-        <div id = "messages" class="container">
-            {% if messageList %}
-                {% for message in messageList %}
-                    <h4> > <strong>{{ message.sender }}</strong> : {{ message.text }} (<i>{{message.date}}</i>) </h4>
-                {% endfor %}
+    <div id = "messageBorder">
+            <span id = "messageList" class="container">
+                {% if messageList %}
+                    {% for message in messageList %}
+                        <h4> > <strong>{{ message.sender }}</strong> : {{ message.text }} (<i>{{message.date}}</i>) </h4>
+                    {% endfor %}
 
-            {% else %}
-                <p>No messages available.</p>
-            {% endif %}
-        </div>
-</div>
-<form action="/user/{{ username }}/chat/{{ receiver }}/" method="post" id = "messageForm">
-    {% csrf_token %}
-    {{form}}
-    <input type="submit" value="Send">
-</form>
+                {% else %}
+                    <p>No messages available.</p>
+                {% endif %}
+            </span>
+    </div>
+    <form action="/user/{{ username }}/chat/{{ receiver }}/" method="post" id = "messageForm">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" value="Send">
+    </form>
 
 
-<a href="/accounts/logout/"> Log out </a>
-<a href="/user/{{username}}/friends"> Friends </a>
-{% else %}
-        <h4>You are not logged in as user {{ username }}, you can't see this page.</h4>
-        <a href="{% url 'index' %}">Click here to log in</a>
-{% endif %}
+    <a href="/accounts/logout/"> Log out </a>
+    <a href="/user/{{username}}/friends"> Friends </a>
+    {% else %}
+            <h4>You are not logged in as user {{ username }}, you can't see this page.</h4>
+            <a href="{% url 'index' %}">Click here to log in</a>
+    {% endif %}
 </body>
 
 </html>

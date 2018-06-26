@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2d49024a-06b9-4a19-8bdb-e10d3be24ba1" name="Default" comment=".">
-      <change beforePath="$PROJECT_DIR$/chat/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/chat/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chat/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/chat/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/script/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/script/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/chat/ajaxChatroom.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/chat/ajaxChatroom.html" afterDir="false" />
@@ -43,50 +43,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/chat/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="123" column="49" selection-start-line="123" selection-start-column="49" selection-end-line="123" selection-end-column="52" />
+            <state relative-caret-position="462">
+              <caret line="79" column="53" selection-start-line="79" selection-start-column="53" selection-end-line="79" selection-end-column="53" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="friends.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/chat/friends.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="305">
-              <caret line="191" column="24" selection-start-line="191" selection-start-column="24" selection-end-line="191" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/chat/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="18" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ajaxChatroom.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/chat/ajaxChatroom.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="17" selection-start-line="17" selection-end-line="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="chatroom.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/chat/chatroom.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="30" column="3" selection-start-line="30" selection-start-column="3" selection-end-line="30" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -110,7 +74,6 @@
       <find>tab_title</find>
       <find>tab_content</find>
       <find>content</find>
-      <find>refresh</find>
       <find>#tab_content</find>
       <find>#tab_title</find>
       <find>tabTitle</find>
@@ -131,6 +94,10 @@
       <find>console</find>
       <find>friends</find>
       <find>receiver</find>
+      <find>js.coo</find>
+      <find>refresh</find>
+      <find>main</find>
+      <find>head</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -164,10 +131,10 @@
         <option value="$PROJECT_DIR$/templates/chat/ajaxFriends.html" />
         <option value="$PROJECT_DIR$/static/script/friends.js" />
         <option value="$PROJECT_DIR$/chat/urls.py" />
-        <option value="$PROJECT_DIR$/static/script/main.js" />
-        <option value="$PROJECT_DIR$/templates/chat/ajaxChatroom.html" />
-        <option value="$PROJECT_DIR$/templates/chat/chatroom.html" />
         <option value="$PROJECT_DIR$/chat/views.py" />
+        <option value="$PROJECT_DIR$/templates/chat/ajaxChatroom.html" />
+        <option value="$PROJECT_DIR$/static/script/main.js" />
+        <option value="$PROJECT_DIR$/templates/chat/chatroom.html" />
         <option value="$PROJECT_DIR$/templates/chat/friends.html" />
       </list>
     </option>
@@ -212,6 +179,17 @@
               <item name="chatroom" type="b2602c69:ProjectViewProjectNode" />
               <item name="chatroom" type="462c0819:PsiDirectoryNode" />
               <item name="registration" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chatroom" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chatroom" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="chatroom" type="b2602c69:ProjectViewProjectNode" />
+              <item name="chatroom" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="script" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="chatroom" type="b2602c69:ProjectViewProjectNode" />
@@ -316,7 +294,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.5026042" side_tool="true" weight="0.34846884" />
@@ -324,8 +301,8 @@
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32946146" />
       <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49739584" visible="true" weight="0.21330518" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.09583333" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.49739584" visible="true" weight="0.21330518" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09583333" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="4" weight="0.3296875" />
       <window_info anchor="right" id="SciView" order="3" />
@@ -612,20 +589,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/chat/ajaxFriends.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="24" column="3" selection-start-line="24" selection-start-column="3" selection-end-line="24" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/script/friends.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/registration/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-293">
@@ -635,8 +598,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/script/main.js">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/static/script/friends.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="18" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/chat/urls.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -645,34 +612,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/chat/views.py">
+    <entry file="file://$PROJECT_DIR$/templates/chat/chatroom.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="123" column="49" selection-start-line="123" selection-start-column="49" selection-end-line="123" selection-end-column="52" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="315">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/chat/ajaxChatroom.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="21">
+          <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/chat/chatroom.html">
+    <entry file="file://$PROJECT_DIR$/static/script/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/chat/ajaxFriends.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="504">
-          <caret line="30" column="3" selection-start-line="30" selection-start-column="3" selection-end-line="30" selection-end-column="3" />
+          <caret line="24" column="3" selection-start-line="24" selection-start-column="3" selection-end-line="24" selection-end-column="3" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/chat/friends.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="191" column="24" selection-start-line="191" selection-start-column="24" selection-end-line="191" selection-end-column="24" />
+        <state relative-caret-position="244">
+          <caret line="65" column="26" lean-forward="true" selection-start-line="65" selection-start-column="26" selection-end-line="65" selection-end-column="30" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#head#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/chat/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="79" column="53" selection-start-line="79" selection-start-column="53" selection-end-line="79" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
