@@ -162,3 +162,6 @@ class FriendView(View):
         return render(request,'chat/friends.html',{'flist':[username]})
 
 
+class FriendView2(View):
+    def get(self,request, **kwargs):
+        return HttpResponse('2')

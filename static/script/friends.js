@@ -2,15 +2,16 @@ console.log('open3');
 
 function refresh() {
     $.ajax({
-        url: '',
+        url: '/user/test/',
         async: true,
         dataType : 'html',
         timeout : 30000,
         success: function(data){
-            $('#friends').html(data);
+            console.log(data);
+            $('#jj').html(data);
         }
     });
-        console.log("refresh");
+    console.log("refresh");
 
 }
 setTimeout(refresh,3000);
