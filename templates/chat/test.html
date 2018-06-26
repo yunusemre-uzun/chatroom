@@ -1,0 +1,8 @@
+{% load static %}
+<script src= "{% static 'script/friends.js' %}"></script>
+
+<div id = "jj">
+    {% for tuple in flist %}
+        <li> <a href="/user/{{username}}/chat/{{ tuple.0 }}"> {{ tuple.0 }}({{ tuple.1 }}) </a></li>
+    {% endfor %}
+</div>

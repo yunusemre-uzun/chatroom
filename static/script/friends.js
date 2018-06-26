@@ -1,17 +1,15 @@
-console.log('open3');
-
 function refresh() {
     $.ajax({
-        url: '/user/test/',
+        url: '/user/ajaxFriends/'+username,
         async: true,
         dataType : 'html',
         timeout : 30000,
         success: function(data){
-            console.log(data);
+            //console.log(data);
             $('#jj').html(data);
         }
     });
-    console.log("refresh");
+    console.log("refresh friendzone");
 
 }
 setTimeout(refresh,3000);
@@ -32,13 +30,3 @@ function w3_close() {
     document.getElementById("mySidebar").style.display = "none";
     document.getElementById("myOverlay").style.display = "none";
 }
-
-// Modal Image Gallery
-function onClick(element) {
-  document.getElementById("img01").src = element.src;
-  document.getElementById("modal01").style.display = "block";
-  var captionText = document.getElementById("caption");
-  captionText.innerHTML = element.alt;
-}
-
-
