@@ -1,4 +1,4 @@
-function refresh() {
+function refresh123() {
     $.ajax({
         url: '/user/notification/'+username,
         async: true,
@@ -12,7 +12,7 @@ function refresh() {
     console.log("refresh notification");
 
 }
-setTimeout(refresh,3000);
+setTimeout(refresh123,3000);
 // When the user clicks on <div>, open the popup
 function myFunction() {
     var popup = document.getElementById("popup");

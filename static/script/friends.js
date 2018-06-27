@@ -1,4 +1,4 @@
-function refresh() {
+function refresh111() {
     $.ajax({
         url: '/user/ajaxFriends/'+username,
         async: true,
@@ -10,9 +10,8 @@ function refresh() {
         }
     });
     console.log("refresh friendzone");
-
+    setTimeout(refresh111,3000);
 }
-setTimeout(refresh,3000);
 // When the user clicks on <div>, open the popup
 function myFunction() {
     var popup = document.getElementById("myPopup");
@@ -30,3 +29,7 @@ function w3_close() {
     document.getElementById("mySidebar").style.display = "none";
     document.getElementById("myOverlay").style.display = "none";
 }
+$( document ).ready(function() {
+    // addCookieTab();
+    refresh111()
+});

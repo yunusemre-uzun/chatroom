@@ -1,7 +1,22 @@
 from django import forms
 
-class MessageForm(forms.Form):
-    new_message = forms.CharField(label='Your message:', max_length=1000)
+from chat.models import Message
+
+
+class MessageForm(forms.ModelForm):
+   # new_message = forms.CharField(label='Your message:', max_length=1000)
+   class Meta:
+       model = Message
+       # exclude = ['author', 'updated', 'created', ]
+       fields = ['text']
+       widgets = {
+           'text': forms.TextInput(attrs={
+               'id': 'message-text',
+               'required': True,
+               'class': 'form',
+           }),
+       }
+
 
 class UserForm(forms.Form):
     username = forms.CharField(label = 'Username', max_length = 1024)

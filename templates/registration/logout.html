@@ -1,5 +1,43 @@
-{% block content %}
-<p>Logged out!</p>  
 
-<a href="/">Click here to go to main page.</a>
-{% endblock %}
+
+{% load static %}
+<style>
+    .bg {
+        background-image: url("{% static "images/background.png" %}");
+        height: 100%;
+        width: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: #096388;
+    }
+</style>
+
+<link rel = "stylesheet" type="text/css" href = "{% static 'css/logout.css' %}">
+
+
+<div class = "bg">
+    <head>
+
+    <link rel = "stylesheet" type="text/css" href = "{% static 'css/index.css' %}">
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <div class="page-header">
+        <h1>Chattaton<span class="glyphicon glyphicon-send"></span> </h1>
+    </div>
+</head>
+    <body>
+        <div id = 'logoutBox'>
+            <br>
+            <h3>You are logged out!</h3>
+            <br>
+            <form action = "/" style="font-size: 140%">
+                {% csrf_token %}
+                <button class = "btn btn-primary btn-lg" type="submit">Click here to go to the main page</button>
+            </form>
+
+        </div>
+    </body>
+
+</div>

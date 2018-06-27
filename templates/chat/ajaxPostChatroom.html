@@ -1,0 +1,39 @@
+<style>
+
+#messageBorder {
+
+    height: 600px;
+    padding: 15px;
+    margin: 25px;
+    left:100%;
+}
+
+#messageBorder {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+</style>
+
+
+<div id = "messageBorder">
+    <div id = "messages" class="container">
+        {% if messageList %}
+
+            {% for message in messageList %}
+                <h4> > <strong>{{ message.sender }}</strong> : {{ message.text }} (<i>{{message.date}}</i>) </h4>
+            {% endfor %}
+
+        {% else %}
+            <p>No messages available.</p>
+        {% endif %}
+    </div>
+</div>
+
+<form action="/user/{{ username }}/chat/{{ receiver }}/" method="post" id = "messageForm">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" value="Send">
+</form>

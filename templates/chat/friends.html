@@ -4,7 +4,10 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="{% static 'script/js.cookie.js' %}"></script>
-<script src="{% static 'script/notification.js' %}"></script>
+{#<script src="{% static 'script/notification.js' %}"></script>#}
+<script src= "{% static 'script/friends.js' %}"></script>
+<script src= "{% static 'script/tabs.js' %}"></script>
+
 <html>
 {% load static %}
 <title>{{user.username}}</title>
@@ -20,9 +23,13 @@ body {font-size:16px;}
 .w3-half img:hover{opacity:1}
 </style>
 <body>
+
+
 <script>
     var username = "{{username}}";
 </script>
+
+
 <!-- Sidebar/menu -->
 <nav class="w3-sidebar w3-blue w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:400px;font-weight:bold;" id="mySidebar"><br>
   <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:25px">Close Menu</a>
@@ -64,11 +71,6 @@ body {font-size:16px;}
 <div class="w3-main" style="margin-left:400px;margin-right:40px">
 
   <!-- Header -->
-
-  <div class="w3-container" style="margin-top:80px" id="showcase">
-    <h1 class="w3-jumbo"><b>Frequently Connected</b></h1>
-    <hr style="width:50px;border:5px solid rgb(47, 108, 221)" class="w3-round">
-  </div>
   <div class="popup" onclick="myFunction()" id="popup">
         {% if new_messages %}
             {% if c_key %}
@@ -83,7 +85,7 @@ body {font-size:16px;}
 
 <!-- The Team -->
         <head>
-         <div class="w3-container" style="margin-top:20px" id="showcase">
+         <div class="w3-container" style="margin-top:0px" id="showcase">
             <h1 class="w3-half"><b>Frequently Connected</b></h1>
 
          </div>
@@ -100,126 +102,6 @@ body {font-size:16px;}
         #add_tab { cursor: pointer; }
         </style>
 
-        <script>
-
-            $( function() {
-            $( "#tabs" ).tabs({
-      beforeLoad: function( event, ui ) {
-        ui.jqXHR.fail(function() {
-          ui.panel.html(
-            "Couldn't load this tab. We'll try to fix this as soon as possible. ");
-        });
-      }
-    });
-          } );
-
-        $( function() {
-            var tabTitle = $( "#tab_title" ),
-            tabContent = $("#tab_content"),
-            tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>",
-            tabCounter = 2;
-            var tabs = $( "#tabs" ).tabs();
-
-            // Modal dialog init: custom buttons and a "close" callback resetting the form inside
-            var dialog = $( "#dialog" ).dialog({
-            autoOpen: false,
-            modal: true,
-            async : true,
-            buttons: {
-                Add: function () {
-                    addTab();
-                     $("#dialog").dialog('close');
-                }
-            },
-            close: function() {
-                form[ 0 ].reset();
-            }
-            });
-
-            // AddTab form: calls addTab function on submit and closes the dialog
-            var form = dialog.find( "form" ).on( "submit", function( event ) {
-            addTab();
-            dialog.dialog( "close" );
-            event.preventDefault();
-            });
-
-
-            // Actual addTab function: adds new tab using the input from the form above
-                function addTab() {
-                    var label = tabTitle.val() || "Error",
-                        id = "tabs-" + tabCounter,
-                        varHref = "/user/{{ username }}/chat/"+label+"/",
-                        li = $( tabTemplate.replace( /#\{href\}/g, varHref ).replace( /#\{label\}/g, label ) );
-                    prevLabels = Cookies.get('labels');
-                    if(typeof(prevLabels)!="undefined" && !prevLabels.includes(label) ){
-                        Cookies.set('labels',prevLabels + ":" + label);
-                    }
-                    else if(typeof(prevLabels)=="undefined"){
-                        Cookies.set('labels',label);
-
-                    }
-                        tabs.find( ".ui-tabs-nav" ).append( li );
-                        tabs.tabs( "refresh" );
-                        tabCounter++;
-            }
-
-
-
-
-            $( document ).ready(function() {
-                addCookieTab();
-                            // AddTab button: just opens the dialog
-
-                });
-
-
-             $( "#add_tab" ).button().on( "click",
-                function() {
-                    dialog.dialog( "open" );
-                });
-
-                // Close icon: removing the tab on click
-                tabs.on( "click", "span.ui-icon-close", function() {
-                    var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
-                    $( "#" + panelId ).remove();
-                    tabs.tabs( "refresh" );
-                });
-
-                tabs.on( "keyup", function( event ) {
-                if ( event.altKey && event.keyCode === $.ui.keyCode.BACKSPACE ) {
-                    var panelId = tabs.find( ".ui-tabs-active" ).remove().attr( "aria-controls" );
-                    $( "#" + panelId ).remove();
-                    tabs.tabs( "refresh" );
-                }
-                });
-
-                function addCookieTab() {
-                    var labels = Cookies.get('labels'),
-                        id = "tabs-" + tabCounter;
-                    var varHref, labelList;
-                    if (typeof(labels) != "undefined") {
-                        labelList = labels.split(":");
-                        console.log(labelList);
-                        for (i = 0; i < labelList.length; i++) {
-                            varHref = "/user/{{username}}/chat/"+labelList[i]+"/";
-                            li = $( tabTemplate.replace( /#\{href\}/g, varHref ).replace( /#\{label\}/g, labelList[i] ) );
-                            tabs.find( ".ui-tabs-nav" ).append( li );
-                            tabs.tabs( "refresh" );
-                            tabCounter++;
-                            console.log(labelList[i]);
-                        }
-                    }
-                    if("{{ receiver }}" !== "None"){
-                        $("#tabs").tabs({active:(labelList.indexOf( "{{receiver}}" ))});
-
-                    }
-
-                }
-
-        } );
-
-
-        </script>
 
         </head>
         <body>
@@ -244,7 +126,7 @@ body {font-size:16px;}
   </ul>
 </div>
 
-<script src= "{% static 'script/friends.js' %}"></script>
+
 
 </body>
 
