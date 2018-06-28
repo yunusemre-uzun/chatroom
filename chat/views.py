@@ -64,20 +64,17 @@ class ChatView(View):
 class AjaxChatView(View):
     def get(self,request, **kwargs):
         username = kwargs['username']
-        receiver_name = kwargs['receiver']
-        user = MyUser.objects.get(username= username)
-        receiver = MyUser.objects.get(username = receiver_name)
-        #filter(Q(..) | Q(..)) allows the usage of or in filter function
-        message_list = Message.objects.filter(Q(sender = user.id,receiver = receiver.id) | Q(sender = receiver.id, receiver = user.id)).order_by('-date')[::-1]
-        context = {'messageList':message_list,'username':username ,'receiver':receiver}
-        #change the unread messages status from {{receivername}} to {{username}} in database to read(coming messages)
-        change_message_list = list(Message.objects.filter(sender=receiver.id,receiver=user.id,is_read=False))
-        print(change_message_list)
-        for message in change_message_list:
-            message.is_read=True
-            message.save()
-        user.save()
-        return render(request,'chat/ajaxChatroom.html',context)
+        cookies = request.COOKIES.get('labels')
+        active_chats = cookies.split("%3A")
+        new_messages = []
+        active_chats[0]="kalabalık"
+        for user in active_chats :
+            user_messages = self.refreshmessages(username,user)
+            new_messages.append(user_messages)
+        user = MyUser.objects.get(username=username)
+        user.last_request = timezone.now()
+        print(new_messages)
+        return HttpResponse(new_messages)
     def post(self, request, **kwargs):
         username = kwargs['username']
         receiverName = kwargs['receiver']
@@ -94,7 +91,25 @@ class AjaxChatView(View):
             return render(request,'chat/ajaxPostChatroom.html',context)
         except:
             return IOError
-
+    def refreshmessages(self,username,receivername):
+        new_request = timezone.now()
+        user = MyUser.objects.get(username=username)
+        receiver = MyUser.objects.get(username=receivername)        
+        last_request = user.last_request
+        user.last_request = new_request
+        #user.save()
+        message_list = Message.objects.filter(
+            Q(sender=user, receiver=receiver) | Q(sender=receiver, receiver=user)).order_by('-date')
+        latest_message = message_list[0]
+        if not(latest_message.date<new_request and latest_message.date>last_request):
+                return []
+        return_message_list = []
+        for message in message_list:
+            if(message.date<new_request and message.date>last_request):
+                return_message_list.append(latest_message)
+            else:
+                break
+        return return_message_list[::-1]
 
 
 class UsernameView(View):
@@ -207,7 +222,6 @@ class FriendView2(View):
         form = AddFriendForm(request.POST)
         user = MyUser.objects.get(username=username)
         friends_list = user.friend_list[1:len(user.friend_list)-1].split(':')
-
         friends_object_list=[]
         if (not friends_list==['']):
             for friend in friends_list:
@@ -267,7 +281,6 @@ class NotificationView(View):
                     'c_key':c_key, 'c_person':c_person}
         return render(request,'chat/notifications.html',context)
 
-
 def getCookieMessages(request,username):
     message_dict = {}
     try:
@@ -285,4 +298,4 @@ def getCookieMessages(request,username):
 
         return message_dict
     except:
-        return;
+        return
