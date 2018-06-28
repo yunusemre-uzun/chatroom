@@ -16,6 +16,7 @@ def refreshmessages(user_id,receiver_id):
     new_request = timezone.now()
     user = MyUser.objects.get(id=user_id)
     last_request = user.last_request
+    user.last_request = new_request
     message_list = Message.objects.filter(
         Q(sender=user_id, receiver=receiver_id) | Q(sender=receiver_id, receiver=user_id)).order_by('-date')
     latest_message = message_list[0]
