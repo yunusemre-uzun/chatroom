@@ -153,12 +153,12 @@ $( function() {
     function addTab() {
       var label = tabTitle.val() || "Tab " + tabCounter,
         id = "tabs-" + tabCounter,
-        li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) ),
+        li = $( tabTemplate.replace( /#\{href\}/g, "#" + label ).replace( /#\{label\}/g, label ) ),
         messageList = getTabTitle();
         tabContentHtml = messageList || "Tab " + tabCounter + " content.";
 
       tabs.find( ".ui-tabs-nav" ).append( li );
-      tabs.append( "<div id='" + id + "'><p>" + tabContentHtml + "</p></div>" );
+      tabs.append( "<div id='" + label + "'><p>" + tabContentHtml + "</p></div>" );
       tabs.tabs( "refresh" );
       tabCounter++;
     }
@@ -185,3 +185,36 @@ $( function() {
       }
     });
   } );
+
+function refreshTabs(new_data){
+  var tabcont=document.getElementById("tabs")
+  var tabs = tabcont.childNodes;
+  var tab_count = tabcont.childElementCount;
+  console.log(tab_count);
+  if(tab_count==1){
+    return;
+  }
+  else{
+    for(var i=1;i<tab_count;i++){
+      id = tabs[i].id;
+      elem=document.getElementById(id);
+      prev_content=elem.innerText;
+      content_to_be_loaded = new_data
+    }
+    
+  }
+}
+
+function refreshtabs() {
+  console.log("refreshtabs");
+  $.ajax({
+      url: '/user/chatroom/'+username,
+      dataType : 'html',
+      timeout : 30000,
+      success: function(data){
+          $('#messageList').html(data);
+      }
+  });
+}
+setInterval(refreshtabs,2000);
+

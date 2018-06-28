@@ -64,20 +64,9 @@ class ChatView(View):
 class AjaxChatView(View):
     def get(self,request, **kwargs):
         username = kwargs['username']
-        receiver_name = kwargs['receiver']
-        user = MyUser.objects.get(username= username)
-        receiver = MyUser.objects.get(username = receiver_name)
-        #filter(Q(..) | Q(..)) allows the usage of or in filter function
-        message_list = Message.objects.filter(Q(sender = user.id,receiver = receiver.id) | Q(sender = receiver.id, receiver = user.id)).order_by('-date')[::-1]
-        context = {'messageList':message_list,'username':username ,'receiver':receiver}
-        #change the unread messages status from {{receivername}} to {{username}} in database to read(coming messages)
-        change_message_list = list(Message.objects.filter(sender=receiver.id,receiver=user.id,is_read=False))
-        print(change_message_list)
-        for message in change_message_list:
-            message.is_read=True
-            message.save()
-        user.save()
-        return render(request,'chat/ajaxChatroom.html',context)
+        active_chats = request.COOKIES['labels']
+        print (active_chats)
+        return HttpResponse("asdasd")
     def post(self, request, **kwargs):
         username = kwargs['username']
         receiverName = kwargs['receiver']

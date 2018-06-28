@@ -11,7 +11,7 @@ urlpatterns = [
     path('', views.UsernameView.as_view(), name = 'username'),
     path('<str:username>/chat/<str:receiver>/' , views.ChatView.as_view(), name = 'chat_screen'),
     path('<str:username>/friends/',views.FriendView.as_view(),name='friends'),
-    path('chatroom/<str:username>/<str:receiver>/', views.AjaxChatView.as_view(), name='ajax_chat'),
+    path('chatroom/<str:username>/', views.AjaxChatView.as_view(), name='ajax_chat'),
     path('ajaxFriends/<str:username>', views.FriendView2.as_view(), name='friend'),
     path('notification/<str:username>', views.NotificationView.as_view(), name='notification'),
 ]
