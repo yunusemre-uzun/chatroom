@@ -1,8 +1,10 @@
 {% load static %}
 <script src= "{% static 'script/notification.js' %}"></script>
+<script>
+    var new_messages = "{{new_messages}}";
+</script>
 
-
-<div class="popup" onclick="myFunction()">
+<div class="popup" id="popup">
     {% if new_messages %}
         {% if c_key %}
             <span class="popuptext" id="myPopup">{{new_messages}} new messages from {{c_person}}</span>

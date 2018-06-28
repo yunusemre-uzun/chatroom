@@ -26,7 +26,7 @@ class SignUpView(View):
             new_user.username = str(form.cleaned_data['username'])
             new_user.set_password(str(form.cleaned_data['password']))
             new_user.first_name = str(form.cleaned_data['fname'])
-            new_user.second_name = str(form.cleaned_data['sname'])
+            new_user.last_name = str(form.cleaned_data['sname'])
             new_user.email_address = str(form.cleaned_data['email'])
             if(User.objects.filter(username = new_user.username).count()==1):
                 return render(request,'registration/signup.html',{'form':form})

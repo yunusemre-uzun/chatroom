@@ -2,12 +2,14 @@ from django.db import models
 from django.db.models import CASCADE
 from django.contrib.auth.models import User
 from django.contrib.auth.validators import ASCIIUsernameValidator
+from django.utils import timezone
 
 max_number_of_friends = 100
 
 class MyUser(User):
     username_validator = ASCIIUsernameValidator()
     friend_list = models.CharField(max_length=max_number_of_friends*151,default=":.")
+    last_request = models.DateTimeField(default=timezone.now())
     def add_friend(self,username):
         if(self.isFriend(username)):
             return

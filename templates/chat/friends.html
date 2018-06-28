@@ -34,6 +34,9 @@ body {font-size:16px;}
 
 <script>
     var username = "{{username}}";
+    var new_messages = "{{new_messages}}";
+    var prev_message_count = 0;
+    var key = 1;
 </script>
 
 
@@ -83,7 +86,6 @@ body {font-size:16px;}
             {% if c_key %}
                 <span class="popuptext" id="myPopup">{{new_messages}} new messages from {{c_person}}</span>
             {% else %}
-                <span class="popuptext" id="myPopup">{{new_messages}} new messages from {{number_of_channels}} people</span>
             {% endif %}
         {% else %}
 
@@ -98,7 +100,6 @@ body {font-size:16px;}
          </div>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>jQuery UI Tabs - Simple manipulation</title>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <style>
         #dialog label, #dialog input { display:block; }
