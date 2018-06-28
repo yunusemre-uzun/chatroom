@@ -17,7 +17,7 @@ def refreshmessages(user_id,receiver_id):
     user = MyUser.objects.get(id=user_id)
     last_request = user.last_request
     message_list = Message.objects.filter(
-        Q(sender=user_id, receiver=receiver_id) | Q(sender=receiver_id, receiver=user_id)).order_by('-date')[::-1])
+        Q(sender=user_id, receiver=receiver_id) | Q(sender=receiver_id, receiver=user_id)).order_by('-date')
     latest_message = message_list[0]
     if not(latest_message.date<new_request and latest_message.date>last_request):
             return []
@@ -27,5 +27,5 @@ def refreshmessages(user_id,receiver_id):
             return_message_list.append(latest_message)
         else:
             break
-    return return_message_list
+    return return_message_list[::-1]
 
