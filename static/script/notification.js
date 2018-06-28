@@ -1,4 +1,4 @@
-function refresh() {
+function refresh123() {
     $.ajax({
         url: '/user/notification/'+username,
         async: true,
@@ -9,15 +9,9 @@ function refresh() {
         }
     }) 
 }
-setTimeout(refresh,5000);
-// When the user clicks on <div>, close the popup
-function hideFunction() {
-    if(prev_message_count==new_messages){
-        key=0;
-    }
-    else{
-        key=1;
-    }
+setTimeout(refresh123,3000);
+// When the user clicks on <div>, open the popup
+function myFunction() {
     var popup = document.getElementById("popup");
     popup.classList.toggle("hide");
 }

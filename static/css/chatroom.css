@@ -1,7 +1,6 @@
 #messageBorder {
-    width: 500px;
+
     height: 600px;
-    border: 15px solid #152780;
     padding: 15px;
     margin: 25px;
     left:100%;
@@ -13,29 +12,29 @@
     flex-direction: column-reverse;
 }
 
- /* Chat containers */
- .container {
+
+.container {
     border: 2px solid #dedede;
     background-color: #f1f1f1;
     border-radius: 5px;
     padding: 10px;
     margin: 10px 0;
+     left:100%;
 }
 
-/* Darker chat container */
 .darker {
     border-color: #ccc;
     background-color: #ddd;
 }
 
-/* Clear floats */
+
 .container::after {
     content: "";
     clear: both;
     display: table;
 }
 
-/* Style images */
+
 .container img {
     float: left;
     max-width: 60px;
@@ -44,21 +43,35 @@
     border-radius: 50%;
 }
 
-/* Style the right image */
+
 .container img.right {
     float: right;
     margin-left: 20px;
     margin-right:0;
 }
 
-/* Style time text */
+
 .time-right {
     float: right;
     color: #aaa;
 }
 
-/* Style time text */
+
 .time-left {
     float: left;
     color: #999;
+}
+
+.form{
+
+    width: 85%;
+    height: 40px;
+    border: 2px solid #064752;
+    border-radius: 4px;
+    background-color:  #ddd;
+    color: black;
+    resize: both;
+    overflow: auto;
+
+
 }

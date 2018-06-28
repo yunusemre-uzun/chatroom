@@ -41,8 +41,8 @@ class ChatView(View):
             message.save()
         user.save()
         ##############################################
-        #if (request.is_ajax()): #if the request is ajax, only renders the message part
-         #   context = {'messageList': message_list }
+       # if (request.is_ajax()): #if the request is ajax, only renders the message part
+           # context = {'messageList': message_list }
           #  return render(request, 'chat/ajaxChatroom.html', context)
         return render(request,'chat/chatroom.html',context)
 
@@ -59,7 +59,7 @@ class ChatView(View):
             receiver.save()
             if (request.is_ajax()):  # if the request is ajax, only renders the message part
                 return self.get(request , username= username , request= request)
-            return HttpResponseRedirect(reverse('chat:friend', args = [username , receiverName]))
+            return HttpResponseRedirect(reverse('chat:friends', args = [username]))
 
 class AjaxChatView(View):
     def get(self,request, **kwargs):
@@ -69,7 +69,7 @@ class AjaxChatView(View):
         receiver = MyUser.objects.get(username = receiver_name)
         #filter(Q(..) | Q(..)) allows the usage of or in filter function
         message_list = Message.objects.filter(Q(sender = user.id,receiver = receiver.id) | Q(sender = receiver.id, receiver = user.id)).order_by('-date')[::-1]
-        context = {'messageList':message_list}
+        context = {'messageList':message_list,'username':username ,'receiver':receiver}
         #change the unread messages status from {{receivername}} to {{username}} in database to read(coming messages)
         change_message_list = list(Message.objects.filter(sender=receiver.id,receiver=user.id,is_read=False))
         print(change_message_list)
@@ -78,6 +78,22 @@ class AjaxChatView(View):
             message.save()
         user.save()
         return render(request,'chat/ajaxChatroom.html',context)
+    def post(self, request, **kwargs):
+        username = kwargs['username']
+        receiverName = kwargs['receiver']
+        try:
+            new_message = request.POST.get('the_message')
+            user = MyUser.objects.get(username=username)
+            receiver = MyUser.objects.get(username = receiverName)
+            message_object = Message(text=new_message,sender= user,receiver = receiver ,date=timezone.now())
+            message_object.save()
+            receiver.save()
+            message_list = Message.objects.filter(Q(sender=user.id, receiver=receiver.id) | Q(sender=receiver.id, receiver=user.id)).order_by('-date')[::-1]
+            form = MessageForm()
+            context = {'messageList': message_list, 'username': username, 'receiver': receiver, 'form':form}
+            return render(request,'chat/ajaxPostChatroom.html',context)
+        except:
+            return IOError
 
 
 
@@ -117,6 +133,8 @@ class SignUpView(View):
                 new_user.save()
                 return HttpResponseRedirect('/')
         return render(request,'chat/signup.html',{'form':form})
+
+
 
 class FriendView(View):
     def get(self,request, **kwargs):
@@ -173,12 +191,13 @@ class FriendView(View):
             friend_name=str(form.cleaned_data['username'])
             friend = MyUser.objects.get(username=friend_name)
             if friend in friends_list:
-                return HttpResponseRedirect(reverse('chat:friend', args=[username]))
+                return HttpResponseRedirect(reverse('chat:friends', args=[username]))
             else:
                 myuser.add_friend(friend_name)
                 friend.add_friend(username)
-                return HttpResponseRedirect(reverse('chat:friend', args=[username]))
+                return HttpResponseRedirect(reverse('chat:friends', args=[username]))
         return render(request,'chat/friends.html',{'flist':[username]})
+
 
 
 class FriendView2(View):

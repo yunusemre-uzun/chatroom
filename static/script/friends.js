@@ -1,4 +1,4 @@
-function refresh() {
+function refresh111() {
     $.ajax({
         url: '/user/ajaxFriends/'+username,
         async: true,
@@ -25,3 +25,7 @@ function w3_close() {
     document.getElementById("mySidebar").style.display = "none";
     document.getElementById("myOverlay").style.display = "none";
 }
+$( document ).ready(function() {
+    // addCookieTab();
+    refresh111()
+});
