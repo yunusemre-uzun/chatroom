@@ -64,10 +64,17 @@ class ChatView(View):
 class AjaxChatView(View):
     def get(self,request, **kwargs):
         username = kwargs['username']
-        active_chats = request.COOKIES.get('labels')
-        print(active_chats)
-        print(getCookieMessages(request,username))
-        return HttpResponse("asdasd")
+        cookies = request.COOKIES.get('labels')
+        active_chats = cookies.split("%3A")
+        new_messages = []
+        active_chats[0]="kalabalık"
+        for user in active_chats :
+            user_messages = self.refreshmessages(username,user)
+            new_messages.append(user_messages)
+        user = MyUser.objects.get(username=username)
+        user.last_request = timezone.now()
+        print(new_messages)
+        return HttpResponse(new_messages)
     def post(self, request, **kwargs):
         username = kwargs['username']
         receiverName = kwargs['receiver']
@@ -84,7 +91,25 @@ class AjaxChatView(View):
             return render(request,'chat/ajaxPostChatroom.html',context)
         except:
             return IOError
-
+    def refreshmessages(self,username,receivername):
+        new_request = timezone.now()
+        user = MyUser.objects.get(username=username)
+        receiver = MyUser.objects.get(username=receivername)        
+        last_request = user.last_request
+        user.last_request = new_request
+        #user.save()
+        message_list = Message.objects.filter(
+            Q(sender=user, receiver=receiver) | Q(sender=receiver, receiver=user)).order_by('-date')
+        latest_message = message_list[0]
+        if not(latest_message.date<new_request and latest_message.date>last_request):
+                return []
+        return_message_list = []
+        for message in message_list:
+            if(message.date<new_request and message.date>last_request):
+                return_message_list.append(latest_message)
+            else:
+                break
+        return return_message_list[::-1]
 
 
 class UsernameView(View):
@@ -262,12 +287,16 @@ def getCookieMessages(request,username):
         cookies = request.COOKIES['labels'];
         cookieList = cookies.split('%3A');
         user = MyUser.objects.get(username=username)
+        print(cookieList)
         for receiver in cookieList:
             receiver = MyUser.objects.get(username = receiver)
             message_list = Message.objects.filter(
             Q(sender=user.id, receiver=receiver.id) | Q(sender=receiver.id, receiver=user.id)).order_by('-date')[::-1]
-            message_dict[receiver] = message_list
+            message_texts = []
+            for message in message_list:
+                message_texts.append("<h4> <strong>"+str(message.sender)+"</strong> : "+str(message.text) +"(<i>" +str(message.date)+"</i>) </h4>")
+            message_dict[receiver] = message_texts
+
         return message_dict
     except:
-        print("sdsdasda")
         return

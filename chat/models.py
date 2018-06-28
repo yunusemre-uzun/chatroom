@@ -47,8 +47,9 @@ class MyUser(User):
 
 class Message(models.Model):
     def __str__(self):
-        text = "<h4> > <strong>"+self.sender+"</strong> : "+self.text +"(<i>" +self.date+"</i>) </h4>"
+        text = "<h4> <strong>"+str(self.sender)+"</strong> : "+str(self.text) +"(<i>" +str(self.date)+"</i>) </h4>"
         return text
+
     text = models.CharField(max_length=2048)
     sender = models.ForeignKey(MyUser,on_delete=models.CASCADE , related_name='sender')
     receiver = models.ForeignKey(MyUser , on_delete = models.CASCADE, related_name = 'receiver')
