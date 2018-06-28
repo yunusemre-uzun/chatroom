@@ -274,7 +274,6 @@ def getCookieMessages(request,username):
         cookies = request.COOKIES['labels'];
         cookieList = cookies.split('%3A');
         user = MyUser.objects.get(username=username)
-        print(cookieList)
         for receiver in cookieList:
             receiver = MyUser.objects.get(username = receiver)
             message_list = Message.objects.filter(
