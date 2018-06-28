@@ -9,15 +9,10 @@ function refresh() {
             $('#jj').html(data);
         }
     });
-    console.log("refresh friendzone");
+    //console.log("refresh friendzone");
 
 }
 setTimeout(refresh,3000);
-// When the user clicks on <div>, open the popup
-function myFunction() {
-    var popup = document.getElementById("myPopup");
-   /*popup.classList.toggle("hide");*/
-}
 //setTimeout(myFunction, 0);
 
 // Script to open and close sidebar

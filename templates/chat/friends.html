@@ -22,6 +22,9 @@ body {font-size:16px;}
 <body>
 <script>
     var username = "{{username}}";
+    var new_messages = "{{new_messages}}";
+    var prev_message_count = 0;
+    var key = 1;
 </script>
 <!-- Sidebar/menu -->
 <nav class="w3-sidebar w3-blue w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:400px;font-weight:bold;" id="mySidebar"><br>
@@ -68,23 +71,23 @@ body {font-size:16px;}
     <h1 class="w3-jumbo"><b>Frequently Connected</b></h1>
     <hr style="width:50px;border:5px solid rgb(47, 108, 221)" class="w3-round">
   </div>
-  <div class="popup" onclick="myFunction()" id="popup">
-        {% if new_messages %}
-            {% if c_key %}
-                <span class="popuptext" id="myPopup">{{new_messages}} new messages from {{c_person}}</span>
+  <div id="popupcont" class="popupcont" onclick="hideFunction()">
+    <div class="popup" id="popup">
+            {% if new_messages %}
+                {% if c_key %}
+                    <span class="popuptext" id="myPopup">{{new_messages}} new messages from {{c_person}}</span>
+                {% else %}
+                    <span class="popuptext" id="myPopup">{{new_messages}} new messages from {{number_of_channels}} people</span>
+                {% endif %}
             {% else %}
-                <span class="popuptext" id="myPopup">{{new_messages}} new messages from {{number_of_channels}} people</span>
             {% endif %}
-        {% else %}
-        
-        {% endif %}
+        </div>
     </div>
 <!-- The Team -->
   <div>
         <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>jQuery UI Tabs - Simple manipulation</title>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <style>
         #dialog label, #dialog input { display:block; }
@@ -117,18 +120,18 @@ body {font-size:16px;}
 
             // Modal dialog init: custom buttons and a "close" callback resetting the form inside
             var dialog = $( "#dialog" ).dialog({
-            autoOpen: false,
-            modal: true,
-            async : true,
-            buttons: {
-                Add: function () {
-                    addTab();
-                     $("#dialog").dialog('close');
+                autoOpen: false,
+                modal: true,
+                async : true,
+                buttons: {
+                    Add: function () {
+                        addTab();
+                        dialog.dialog('close');
+                    }
+                },
+                close: function() {
+                    form[ 0 ].reset();
                 }
-            },
-            close: function() {
-                form[ 0 ].reset();
-            }
             });
 
             // AddTab form: calls addTab function on submit and closes the dialog
