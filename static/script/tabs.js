@@ -163,7 +163,7 @@ $( function() {
         if(typeof(prevLabels)!="undefined" && !prevLabels.includes(label) ){
             Cookies.set('labels',prevLabels + ":" + label);
         }
-        else if(prevLabels.includes(label)){
+        else if(typeof(prevLabels)!="undefined" && prevLabels.includes(label)){
             window.alert("This tab already exists");
             return;
         }

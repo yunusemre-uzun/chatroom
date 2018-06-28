@@ -270,13 +270,20 @@ class NotificationView(View):
 
 def getCookieMessages(request,username):
     message_dict = {}
-    cookies = request.COOKIES['labels'];
-    cookieList = cookies.split('%3A');
-    user = MyUser.objects.get(username=username)
-    for receiver in cookieList:
-        receiver = MyUser.objects.get(username = receiver)
-        message_list = Message.objects.filter(
-        Q(sender=user.id, receiver=receiver.id) | Q(sender=receiver.id, receiver=user.id)).order_by('-date')[::-1]
-        message_dict[receiver] = message_list
+    try:
+        cookies = request.COOKIES['labels'];
+        cookieList = cookies.split('%3A');
+        user = MyUser.objects.get(username=username)
+        print(cookieList)
+        for receiver in cookieList:
+            receiver = MyUser.objects.get(username = receiver)
+            message_list = Message.objects.filter(
+            Q(sender=user.id, receiver=receiver.id) | Q(sender=receiver.id, receiver=user.id)).order_by('-date')[::-1]
+            message_texts = []
+            for message in message_list:
+                message_texts.append("<h4> <strong>"+str(message.sender)+"</strong> : "+str(message.text) +"(<i>" +str(message.date)+"</i>) </h4>")
+            message_dict[receiver] = message_texts
 
-    return message_dict
+        return message_dict
+    except:
+        return;
