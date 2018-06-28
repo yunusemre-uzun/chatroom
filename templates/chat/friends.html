@@ -7,7 +7,7 @@
 
 <!DOCTYPE html>
 {% load static %}
-{% load databaseInteraction %}
+{% load database_interaction %}
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="{% static 'script/js.cookie.js' %}"></script>
@@ -111,29 +111,36 @@ body {font-size:16px;}
 
 
         </head>
-        <body>
+    <body>
 
-        <div id="dialog" title="Tab data">
-        <form>
-            {% csrf_token %}
-            <fieldset class="ui-helper-reset">
+    <div id="dialog" title="Tab data">
+  <form>
+
+        <fieldset class="ui-helper-reset">
                 <select name="tab_title" id="tab_title">
                     {% for tuple in flist %}
                     <option> {{ tuple.0 }}</option>
                     {% endfor %}
                 </select>
             </fieldset>
-        </form>
-        </div>
+       <script>
+           function getTabTitle(){
+               var title = $("#tab_title").val();
+              console.log(title);
+              {% getMessages username title as messages%};
+              var messageList = "{{ messages }}";
+              return messageList;
+           }
+      </script>
+  </form>
+</div>
 
-        <button id="add_tab">Add Tab</button>
-
+<button id="add_tab">Add Tab</button>
 
 <div id="tabs">
   <ul>
   </ul>
 </div>
-
 
 
 </body>
@@ -142,7 +149,6 @@ body {font-size:16px;}
 
 
 </html>
-
 
 
 
