@@ -136,12 +136,15 @@ class SignUpView(View):
 
 class FriendView(View):
     def get(self,request, **kwargs):
+
         username = kwargs['username']
         receiver = kwargs.get('receiverName' , "None")
+
+        message_dict = getCookieMessages(request,username)
+
         form = AddFriendForm(request.POST)
         user = MyUser.objects.get(username=username)
         friends_list = user.friend_list[1:len(user.friend_list)-1].split(':')
-        message_list = Message.objects.filter(Q(sender = user.id) | Q(receiver = user.id)).order_by('-date')[::-1]
         friends_object_list=[]
         if (not friends_list==['']):
             for friend in friends_list:
@@ -175,7 +178,7 @@ class FriendView(View):
         ####################################
         context = {'user':user,'flist':ret,'message_count':unread_message_count_list,'username':username,
                     'form':form,'new_messages':new_messages,'number_of_channels':number_of_channels,
-                    'c_key':c_key, 'c_person':c_person,'receiver':receiver}
+                    'c_key':c_key, 'c_person':c_person,'receiver':receiver, 'message_dict':message_dict}
         return render(request,'chat/friends.html',context)
 
 
@@ -204,7 +207,7 @@ class FriendView2(View):
         form = AddFriendForm(request.POST)
         user = MyUser.objects.get(username=username)
         friends_list = user.friend_list[1:len(user.friend_list)-1].split(':')
-        message_list = Message.objects.filter(Q(sender = user.id) | Q(receiver = user.id)).order_by('-date')[::-1]
+
         friends_object_list=[]
         if (not friends_list==['']):
             for friend in friends_list:
@@ -221,7 +224,7 @@ class FriendView2(View):
         for i in range(len(friends_list)):
             ret.append((friends_object_list[i],unread_message_count_list[i]))
         context = {'flist':ret,'username':username}
-        return render(request,'chat/ajaxFriends.html',context)
+        return HttpResponse(ret)
 
 class NotificationView(View):
     def get(self,request, **kwargs):
@@ -263,3 +266,17 @@ class NotificationView(View):
                     'new_messages':new_messages,'number_of_channels':number_of_channels,
                     'c_key':c_key, 'c_person':c_person}
         return render(request,'chat/notifications.html',context)
+
+
+def getCookieMessages(request,username):
+    message_dict = {}
+    cookies = request.COOKIES['labels'];
+    cookieList = cookies.split('%3A');
+    user = MyUser.objects.get(username=username)
+    for receiver in cookieList:
+        receiver = MyUser.objects.get(username = receiver)
+        message_list = Message.objects.filter(
+        Q(sender=user.id, receiver=receiver.id) | Q(sender=receiver.id, receiver=user.id)).order_by('-date')[::-1]
+        message_dict[receiver] = message_list
+
+    return message_dict

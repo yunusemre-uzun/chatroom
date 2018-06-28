@@ -5,8 +5,8 @@ function refreshfriends() {
         dataType : 'html',
         timeout : 30000,
         success: function(data){
-            //console.log(data);
-            $('#jj').html(data);
+            console.log(data);
+            //$('#jj').html(data);
         }
 
     });

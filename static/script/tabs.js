@@ -53,6 +53,10 @@ $(function() {
                     if(typeof(prevLabels)!="undefined" && !prevLabels.includes(label) ){
                         Cookies.set('labels',prevLabels + ":" + label);
                     }
+                    else if(prevLabels.includes(label)){
+                    window.alert("This tab already exists");
+                        return;
+                    }
                     else if(typeof(prevLabels)=="undefined"){
                         Cookies.set('labels',label);
 
@@ -66,7 +70,7 @@ $(function() {
 
 
             $( document ).ready(function() {
-               // addCookieTab();
+                addCookieTab();
                             // AddTab button: just opens the dialog
 
                 });
@@ -112,9 +116,9 @@ $(function() {
 
                 }
 
-        });
+        });*/
 
-*/
+
 
 
 $( function() {
@@ -153,14 +157,25 @@ $( function() {
     function addTab() {
       var label = tabTitle.val() || "Tab " + tabCounter,
         id = "tabs-" + tabCounter,
-        li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) ),
-        messageList = getTabTitle();
-        tabContentHtml = messageList || "Tab " + tabCounter + " content.";
+        li = $( tabTemplate.replace( /#\{href\}/g, "#" + label ).replace( /#\{label\}/g, label ) ),
+        tabContentHtml =  "";
+        prevLabels =  Cookies.get('labels');
+        if(typeof(prevLabels)!="undefined" && !prevLabels.includes(label) ){
+            Cookies.set('labels',prevLabels + ":" + label);
+        }
+        else if(prevLabels.includes(label)){
+            window.alert("This tab already exists");
+            return;
+        }
+        else if(typeof(prevLabels)=="undefined"){
+            Cookies.set('labels',label);
+        }
 
       tabs.find( ".ui-tabs-nav" ).append( li );
-      tabs.append( "<div id='" + id + "'><p>" + tabContentHtml + "</p></div>" );
+      tabs.append( "<div id='" + label + "'><p>" + tabContentHtml + "</p></div>" );
       tabs.tabs( "refresh" );
       tabCounter++;
+       console.log(Cookies.get('labels'));
     }
 
     // AddTab button: just opens the dialog
@@ -183,5 +198,31 @@ $( function() {
         $( "#" + panelId ).remove();
         tabs.tabs( "refresh" );
       }
+    });
+
+    function addCookieTab() {
+        var labels = Cookies.get('labels'),
+            id = "tabs-" + tabCounter;
+        var labelList,
+         tabContentHtml =  "";
+        if (typeof(labels) != "undefined") {
+            labelList = labels.split(":");
+            console.log(labelList);
+            for (i = 0; i < labelList.length; i++) {
+                id = "tabs-" + tabCounter,
+                    li = $( tabTemplate.replace( /#\{href\}/g, "#" + labelList[i] ).replace( /#\{label\}/g, labelList[i] ) ),
+              tabs.find( ".ui-tabs-nav" ).append( li );
+              tabs.append( "<div id='" + labelList[i] + "'><p>" + tabContentHtml + "</p></div>" );
+              tabs.tabs( "refresh" );
+              tabCounter++;
+              id = "tabs-" + tabCounter;
+            }
+        }
+
+    }
+    $( document ).ready(function() {
+        addCookieTab();
+
+
     });
   } );
