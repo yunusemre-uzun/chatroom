@@ -1,4 +1,4 @@
-function refresh111() {
+function refreshfriends() {
     $.ajax({
         url: '/user/ajaxFriends/'+username,
         async: true,
@@ -8,13 +8,12 @@ function refresh111() {
             //console.log(data);
             $('#jj').html(data);
         }
+
     });
     //console.log("refresh friendzone");
-
+    setTimeout(refreshfriends,3000);
 }
-setTimeout(refresh,3000);
 //setTimeout(myFunction, 0);
-
 // Script to open and close sidebar
 function w3_open() {
     document.getElementById("mySidebar").style.display = "block";
@@ -27,5 +26,5 @@ function w3_close() {
 }
 $( document ).ready(function() {
     // addCookieTab();
-    refresh111()
+    refreshfriends()
 });
