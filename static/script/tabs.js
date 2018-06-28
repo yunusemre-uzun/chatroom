@@ -14,7 +14,7 @@ $( function() {
 $(function() {
             var tabTitle = $( "#tab_title" ),
             tabContent = $("#tab_content");
-            var tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>",
+            var tabTemplate = "<li> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>",
             tabCounter = 2;
             var tabs = $( '#tabs' ).tabs();
 
@@ -46,8 +46,7 @@ $(function() {
                 function addTab() {
                     var label = tabTitle.val() || "Error",
                         id = "tabs-" + tabCounter,
-                        varHref = "/user/"+username+"/chat/"+label+"/",
-                        li = $( tabTemplate.replace( /#\{href\}/g, varHref ).replace( /#\{label\}/g, label ) );
+                        li = $( tabTemplate.replace( /#\{label\}/g, label ) );
 
                     prevLabels = Cookies.get('labels');
                     if(typeof(prevLabels)!="undefined" && !prevLabels.includes(label) ){

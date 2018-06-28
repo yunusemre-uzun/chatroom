@@ -134,8 +134,6 @@ class SignUpView(View):
                 return HttpResponseRedirect('/')
         return render(request,'chat/signup.html',{'form':form})
 
-
-
 class FriendView(View):
     def get(self,request, **kwargs):
         username = kwargs['username']

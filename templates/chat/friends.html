@@ -1,6 +1,13 @@
+{# TODO linklerin icindeki ajax requestleri kaldir hepsi sayfanin icinde generate etsin #}
+{# TODO generate edebilmeleri icin onload, refresh ve add tab onload fonkisyonlari yaz #}
+{# TODO tefresh sadece databasedeki yeni mesajlair ceksin eskileri hafizdan liste olarak tutsun #}
+{# TODO refresh icin acik olan tablarin listesini ver, sadece o kullanicilara refresh atsin, onload da ayni sekilde #}
+{# TODO refresh ajaxla calissin submitteki ajax kalsin #}
+
 
 <!DOCTYPE html>
 {% load static %}
+{% load databaseInteraction %}
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="{% static 'script/js.cookie.js' %}"></script>
@@ -120,6 +127,7 @@ body {font-size:16px;}
         </div>
 
         <button id="add_tab">Add Tab</button>
+
 
 <div id="tabs">
   <ul>
