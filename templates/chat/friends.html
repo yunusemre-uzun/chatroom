@@ -37,6 +37,7 @@ body {font-size:16px;}
     var new_messages = "{{new_messages}}";
     var prev_message_count = 0;
     var key = 1;
+    var userMessagesArray = [];
 </script>
 
 
@@ -133,7 +134,17 @@ body {font-size:16px;}
   <ul>
   </ul>
 </div>
+<ul>
+    {% for key, value in message_dict.items %}
+      <script>
+          var messagelist = {{ value|safe }};
+          messagelist.unshift({{ key}});
+          userMessagesArray.push(messagelist);
+      </script>
+    {% endfor %}
 
+    {# message-dict is a dictionary of messages that consists of each receiver in cookies and their messages  #}
+</ul>
 
 </body>
 

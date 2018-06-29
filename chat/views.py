@@ -65,9 +65,11 @@ class AjaxChatView(View):
     def get(self,request, **kwargs):
         username = kwargs['username']
         cookies = request.COOKIES.get('labels')
+        if(cookies==None):
+            return HttpResponse("")
         active_chats = cookies.split("%3A")
         new_messages = []
-        active_chats[0]="kalabalık"
+        #active_chats[0]="kalabalık"
         for user in active_chats :
             user_messages = self.refreshmessages(username,user)
             new_messages.append(user_messages)
@@ -97,7 +99,7 @@ class AjaxChatView(View):
         receiver = MyUser.objects.get(username=receivername)        
         last_request = user.last_request
         user.last_request = new_request
-        #user.save()
+        user.save()
         message_list = Message.objects.filter(
             Q(sender=user, receiver=receiver) | Q(sender=receiver, receiver=user)).order_by('-date')
         latest_message = message_list[0]
@@ -287,7 +289,6 @@ def getCookieMessages(request,username):
         cookies = request.COOKIES['labels'];
         cookieList = cookies.split('%3A');
         user = MyUser.objects.get(username=username)
-        print(cookieList)
         for receiver in cookieList:
             receiver = MyUser.objects.get(username = receiver)
             message_list = Message.objects.filter(
