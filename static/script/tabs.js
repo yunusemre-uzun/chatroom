@@ -183,6 +183,8 @@ $( function() {
                 $('#'+labelList[i]).append(f);
                 tabs.tabs( "refresh" );
                 tabCounter++;
+                // var div = document.getElementById(labelList[i]);
+                // console.log(div);
                 id = "tabs-" + tabCounter;
                 tabContentHtml =  "";
             }
@@ -251,4 +253,8 @@ function refreshtabs() {
 }
 setInterval(refreshtabs,3000);
 
+function scrollToBottom (id) {
+   var div = document.getElementById(id);
+   div.scrollTop = div.scrollHeight - div.clientHeight;
+}
 
