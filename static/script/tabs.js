@@ -1,3 +1,7 @@
+//TODO pressing enter intead of clickinng send button in tabs leads to error
+//TODO add friend has a little visual bug
+//TODO mesages does not scroll to bottom when the page is opened
+
 $( function() {
     var tabTitle = $( "#tab_title" ),
       tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>",
@@ -137,6 +141,7 @@ $( function() {
 
                             $('input[type="text"]').val("");
                             $('#' + id + ' > #messages' ).append(data.slice(position_of_id_end+7));
+                             $('#' + id + ' > #messages' ).scrollTop($('#' + id + ' > #messages' )[0].scrollHeight);
                             }
                     });
 
@@ -176,11 +181,10 @@ $( function() {
                     "} </style>";
                 tabs.find( ".ui-tabs-nav" ).append( li );
                 tabs.append( cssText + "<div id='" + labelList[i] + "'><p>" + tabContentHtml + "</p></div>" );
+                $('#' + labelList[i] + ' > #messages' ).scrollTop($('#' + labelList[i] + ' > #messages' )[0].scrollHeight)
                 $('#'+labelList[i]).append(f);
                 tabs.tabs( "refresh" );
                 tabCounter++;
-                // var div = document.getElementById(labelList[i]);
-                // console.log(div);
                 id = "tabs-" + tabCounter;
                 tabContentHtml =  "";
             }
@@ -213,6 +217,7 @@ function refreshTabs(new_data){
           continue;
       }
       $('#' + id + ' > #messages' ).append(findMessages(id,new_data))
+      $('#' + id + ' > #messages' ).scrollTop($('#' + id + ' > #messages' )[0].scrollHeight)
     }
     return;
   }
