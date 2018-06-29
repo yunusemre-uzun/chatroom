@@ -6,7 +6,7 @@ function refreshfriends() {
         timeout : 30000,
         success: function(data){
             //console.log(data);
-            //$('#jj').html(data);
+            $('#jj').html(data);
         }
 
     });
