@@ -316,4 +316,4 @@ class SaveMessageView(View):
         new_message = kwargs['message_text']
         message_object = Message(text=new_message, sender=user, receiver=receiver, date=timezone.now())
         message_object.save()
-        return HttpResponse("Successful")
+        return HttpResponse("<data>"+receiverName+"</data>"+"<h4> <strong>"+str(message_object.sender)+"</strong> : "+str(message_object.text) +"(<i>" +str(message_object.date)+"</i>) </h4>")
