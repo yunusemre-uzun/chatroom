@@ -61,18 +61,20 @@ class ChatView(View):
 
 class AjaxChatView(View):
     def get(self,request, **kwargs):
-            username = kwargs['username']
-            cookies = request.COOKIES.get('labels')
-            active_chats = cookies.split("%3A")
-            new_messages = []
-            active_chats[0]="kalabalık"
-            for user in active_chats :
-                user_messages = self.refreshmessages(username,user)
-                new_messages.append(user_messages)
-            user = MyUser.objects.get(username=username)
-            user.last_request = timezone.now()
-            print(new_messages)
-            return HttpResponse(new_messages)
+        username = kwargs['username']
+        cookies = request.COOKIES.get('labels')
+        if(cookies==None):
+            return HttpResponse("")
+        active_chats = cookies.split("%3A")
+        new_messages = []
+        #active_chats[0]="kalabalık"
+        for user in active_chats :
+            user_messages = self.refreshmessages(username,user)
+            new_messages.append(user_messages)
+        user = MyUser.objects.get(username=username)
+        user.last_request = timezone.now()
+        print(new_messages)
+        return HttpResponse(new_messages)
     def post(self, request, **kwargs):
         username = kwargs['username']
         receiverName = kwargs['receiver']
@@ -92,19 +94,21 @@ class AjaxChatView(View):
     def refreshmessages(self,username,receivername):
         new_request = timezone.now()
         user = MyUser.objects.get(username=username)
-        print(receivername)
+        #print(receivername)
         receiver = MyUser.objects.get(username=receivername)
         last_request = user.last_request
         user.last_request = new_request
-        #user.save()
+        user.save()
         message_list = Message.objects.filter(
             Q(sender=user, receiver=receiver) | Q(sender=receiver, receiver=user)).order_by('-date')
         latest_message = message_list[0]
-        if not(latest_message.date<new_request and latest_message.date>last_request):
-                return []
+        if ((not(latest_message.date<new_request and latest_message.date>last_request)) and latest_message.is_read):
+            return []
         return_message_list = []
         for message in message_list:
-            if(message.date<new_request and message.date>last_request):
+            if((message.date<new_request and message.date>last_request) or (not(message.is_read))):
+                message.is_read = True
+                message.save()
                 return_message_list.append(latest_message)
             else:
                 break

@@ -11,7 +11,7 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="{% static 'script/js.cookie.js' %}"></script>
-{#<script src="{% static 'script/notification.js' %}"></script>#}
+<script src="{% static 'script/notification.js' %}"></script>
 <script src= "{% static 'script/friends.js' %}"></script>
 <script src= "{% static 'script/tabs.js' %}"></script>
 
@@ -143,7 +143,7 @@ body {font-size:16px;}
           var messagelist = {{ value|safe }};
           messagelist.unshift("{{ key}}");
           userMessagesArray.push(messagelist);
-          console.log(userMessagesArray);
+          //console.log(userMessagesArray);
       </script>
     {% endfor %}
 
