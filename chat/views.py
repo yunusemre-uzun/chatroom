@@ -63,18 +63,18 @@ class ChatView(View):
 
 class AjaxChatView(View):
     def get(self,request, **kwargs):
-        username = kwargs['username']
-        cookies = request.COOKIES.get('labels')
-        active_chats = cookies.split("%3A")
-        new_messages = []
-        active_chats[0]="kalabalık"
-        for user in active_chats :
-            user_messages = self.refreshmessages(username,user)
-            new_messages.append(user_messages)
-        user = MyUser.objects.get(username=username)
-        user.last_request = timezone.now()
-        print(new_messages)
-        return HttpResponse(new_messages)
+            username = kwargs['username']
+            cookies = request.COOKIES.get('labels')
+            active_chats = cookies.split("%3A")
+            new_messages = []
+            active_chats[0]="kalabalık"
+            for user in active_chats :
+                user_messages = self.refreshmessages(username,user)
+                new_messages.append(user_messages)
+            user = MyUser.objects.get(username=username)
+            user.last_request = timezone.now()
+            print(new_messages)
+            return HttpResponse(new_messages)
     def post(self, request, **kwargs):
         username = kwargs['username']
         receiverName = kwargs['receiver']
@@ -94,7 +94,8 @@ class AjaxChatView(View):
     def refreshmessages(self,username,receivername):
         new_request = timezone.now()
         user = MyUser.objects.get(username=username)
-        receiver = MyUser.objects.get(username=receivername)        
+        print(receivername)
+        receiver = MyUser.objects.get(username=receivername)
         last_request = user.last_request
         user.last_request = new_request
         #user.save()
@@ -191,9 +192,10 @@ class FriendView(View):
                 if(i[1]>0):
                     c_person = i[0]
         ####################################
+        chat_form = MessageForm()
         context = {'user':user,'flist':ret,'message_count':unread_message_count_list,'username':username,
                     'form':form,'new_messages':new_messages,'number_of_channels':number_of_channels,
-                    'c_key':c_key, 'c_person':c_person,'receiver':receiver, 'message_dict':message_dict}
+                    'c_key':c_key, 'c_person':c_person,'receiver':receiver, 'message_dict':message_dict,'chat_form':chat_form}
         return render(request,'chat/friends.html',context)
 
 
@@ -284,8 +286,10 @@ class NotificationView(View):
 def getCookieMessages(request,username):
     message_dict = {}
     try:
-        cookies = request.COOKIES['labels'];
-        cookieList = cookies.split('%3A');
+        cookies = request.COOKIES['labels']
+
+        cookieList = cookies.split('%3A')
+        print(cookieList)
         user = MyUser.objects.get(username=username)
         for receiver in cookieList:
             receiver = MyUser.objects.get(username = receiver)

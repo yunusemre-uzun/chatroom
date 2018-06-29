@@ -1,6 +1,4 @@
 
-//TODO cant remove cookies when the tabs are closed, add remove option
-//TODO when a form is sent, dont refresh the whole page
 /*$( function() {
             $( "#tabs" ).tabs({
       beforeLoad: function( event, ui ) {
@@ -119,7 +117,6 @@ $(function() {
 
         });*/
 
-
 $( function() {
     var tabTitle = $( "#tab_title" ),
       tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>",
@@ -161,7 +158,7 @@ $( function() {
 
         prevLabels =  Cookies.get('labels');
         if(typeof(prevLabels)!="undefined" && !prevLabels.includes(label) ){
-            Cookies.set('labels',prevLabels + ":" + label);
+            Cookies.set('labels',prevLabels + ":" + label,{path:"/"});
         }
         /*else if(typeof(prevLabels)!="undefined" && prevLabels.includes(label)){
             window.alert("This tab already exists");
@@ -170,11 +167,12 @@ $( function() {
         else if(typeof(prevLabels)=="undefined"){
             Cookies.set('labels',label,{path:"/"});
         }
+        location.reload();
 
-      tabs.find( ".ui-tabs-nav" ).append( li );
-      tabs.append( "<div id='" + label + "'><p>" + tabContentHtml + "</p></div>" );
-      tabs.tabs( "refresh" );
-      tabCounter++;
+       // tabs.find( ".ui-tabs-nav" ).append( li );
+       // tabs.append( "<div id='" + label + "'><p>" + tabContentHtml + "</p></div>" );
+       // tabs.tabs( "refresh" );
+       // tabCounter++;
     }
 
     // AddTab button: just opens the dialog
@@ -204,6 +202,9 @@ $( function() {
             id = "tabs-" + tabCounter;
         var labelList,
          tabContentHtml =  "";
+
+
+        console.log(labels);
         if (typeof(labels) != "undefined") {
             labelList = labels.split(":");
 
@@ -214,7 +215,36 @@ $( function() {
 
                 for( j = 0 ; j<userMessagesArray.length ;j++){
                     if(String(userMessagesArray[j][0])=== String(labelList[i])){
+                        // var f = document.createElement("form");
+                        // f.setAttribute('method',"post");
+                        // f.setAttribute('action',"submit.php");
+                        //
+                        // //create input element
+                        // var i = document.createElement("input");
+                        // i.type = "text";
+                        // i.name = "user_name";
+                        // i.id = "user_name1";
+                        //
+                        // var s = document.createElement("input");
+                        // s.type = "submit";
+                        // s.value = "Submit";
+                        // f.appendChild(i);
+                        // f.appendChild(s);
+                        //
+                        // var inputElem = document.createElement('input');
+                        // inputElem.type = 'hidden';
+                        // inputElem.name = 'csrfmiddlewaretoken';
+                        // inputElem.value = Cookies.get('csrftoken');
+                        // f.appendChild(inputElem);
+
+
+                        var csrf = "<input id=\"token\" type=\"hidden\" value= "+ Cookies.get('csrftoken') +" ></input>"
+                        formHtml = " <form action=\"/user/"+username+"/friends/\" method=\"post\" id = \"messageForm\">\n" +
+                            csrf+ "\n" + chat_form + "<input type=\"submit\" value=\"Send\">\n" + "</form>";
                          tabContentHtml = "<div id = 'messages'>"+userMessagesArray[j].slice(1).join(" ")+"</div>";
+
+                         //TODO csrf does not work
+                         console.log(tabContentHtml);
                     }
                 }
 
