@@ -84,16 +84,6 @@ body {font-size:16px;}
 <div class="w3-main" style="margin-left:400px;margin-right:40px">
 
   <!-- Header -->
-  <div class="popup" onclick="myFunction()" id="popup">
-        {% if new_messages %}
-            {% if c_key %}
-                <span class="popuptext" id="myPopup">{{new_messages}} new messages from {{c_person}}</span>
-            {% else %}
-            {% endif %}
-        {% else %}
-
-        {% endif %}
-    </div>
 
 <!-- The Team -->
         <head>
@@ -112,7 +102,18 @@ body {font-size:16px;}
         #tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
         #add_tab { cursor: pointer; }
         </style>
-
+        <div class="popup" id="popupcont">
+            <span id="popup_text">
+            {% if new_messages %}
+                {% if c_key %}
+                    <span class="popuptext" id="myPopup">{{new_messages}} new messages from {{c_person}}</span>
+                {% else %}
+                    <span class="popuptext" id="myPopup">{{new_messages}} new messages from {{number_of_channels}} people</span>
+                {% endif %}
+            {% else %}
+            {% endif %}
+            </span>
+        </div>
 
         </head>
     <body>

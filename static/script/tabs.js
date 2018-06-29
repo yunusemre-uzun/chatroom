@@ -1,4 +1,3 @@
-
 $( function() {
     var tabTitle = $( "#tab_title" ),
       tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>",
@@ -124,14 +123,11 @@ $( function() {
                         dataType : 'html',
                         timeout : 30000,
                         success: function(data){
-                            console.log(data);
-                            //console.log("message successfuly saved to database");
-                             position_of_id_begin = data.search("<data>")+6;
+                            position_of_id_begin = data.search("<data>")+6;
                             position_of_id_end = data.search("</data>");
                             var id =  data.slice(position_of_id_begin,position_of_id_end)
 
                             $('input[type="text"]').val("");
-                            console.log("/"+id+"/");
 
                             $('#' + id + ' > #messages' ).append(data.slice(position_of_id_end+7));
                             }
@@ -207,7 +203,6 @@ function refreshTabs(new_data){
 function findMessages(id,data){
   ret = []
   data = data.slice(1,data.length-1);
-  //console.log(data);
   my_data = data.split("][");
   for(var i=0;i<my_data.length;i++){
     position_of_id_begin = my_data[i].search("<strong>")+8;
@@ -222,7 +217,6 @@ function findMessages(id,data){
 }
 
 function refreshtabs() {
-  //console.log("refreshtabs");
   $.ajax({
       url: '/user/chatroom/'+username,
       dataType : 'html',

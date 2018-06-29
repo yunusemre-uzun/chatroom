@@ -5,17 +5,19 @@ function refreshnotification() {
         dataType : 'html',
         timeout : 30000,
         success: function(data){
-            $('#popupcont').html(data);
+            $('#popup_text').html(data);
         }
     })
-    setTimeout(refreshnotification,3000);
 }
 // When the user clicks on <div>, open the popup
 function myFunction() {
     var popup = document.getElementById("popup");
     popup.classList.toggle("hide");
 }
+setInterval(refreshnotification,3000);
+/*
 $( document ).ready(function() {
     // addCookieTab();
     refreshnotification()
 });
+*/

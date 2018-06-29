@@ -35,7 +35,7 @@ class ChatView(View):
         context = {'roomName':'','messageList':message_list,'form':form, 'username':username ,'receiver':receiver}
         #change the unread messages status from {{receivername}} to {{username}} in database to read(coming messages)
         change_message_list = list(Message.objects.filter(sender=receiver.id,receiver=user.id,is_read=False))
-        print(change_message_list)
+        #print(change_message_list)
         for message in change_message_list:
             message.is_read=True
             message.save()
@@ -73,7 +73,7 @@ class AjaxChatView(View):
             new_messages.append(user_messages)
         user = MyUser.objects.get(username=username)
         user.last_request = timezone.now()
-        print(new_messages)
+        #print(new_messages)
         return HttpResponse(new_messages)
     def post(self, request, **kwargs):
         username = kwargs['username']
@@ -100,7 +100,7 @@ class AjaxChatView(View):
         user.last_request = new_request
         user.save()
         message_list = Message.objects.filter(
-            Q(sender=user, receiver=receiver) | Q(sender=receiver, receiver=user)).order_by('-date')
+            Q(sender=receiver, receiver=user)).order_by('-date')
         latest_message = message_list[0]
         if ((not(latest_message.date<new_request and latest_message.date>last_request)) and latest_message.is_read):
             return []
@@ -242,7 +242,7 @@ class FriendView2(View):
         for i in range(len(friends_list)):
             ret.append((friends_object_list[i],unread_message_count_list[i]))
         context = {'flist':ret,'username':username}
-        return HttpResponse(ret)
+        return render(request,'chat/ajaxFriends.html',context)
 
 class NotificationView(View):
     def get(self,request, **kwargs):
@@ -291,7 +291,7 @@ def getCookieMessages(request,username):
         cookies = request.COOKIES['labels']
 
         cookieList = cookies.split('%3A')
-        print(cookieList)
+        #print(cookieList)
         user = MyUser.objects.get(username=username)
         for receiver in cookieList:
             receiver = MyUser.objects.get(username = receiver)
