@@ -42,19 +42,15 @@ $( function() {
         if(typeof(prevLabels)!="undefined" && !prevLabels.includes(label) ){
             Cookies.set('labels',prevLabels + ":" + label,{path:"/"});
         }
-        /*else if(typeof(prevLabels)!="undefined" && prevLabels.includes(label)){
+        else if(typeof(prevLabels)!="undefined" && prevLabels.includes(label)){
             window.alert("This tab already exists");
             return;
-        }*/
+        }
         else if(typeof(prevLabels)=="undefined"){
             Cookies.set('labels',label,{path:"/"});
         }
         location.reload();
 
-       // tabs.find( ".ui-tabs-nav" ).append( li );
-       // tabs.append( "<div id='" + label + "'><p>" + tabContentHtml + "</p></div>" );
-       // tabs.tabs( "refresh" );
-       // tabCounter++;
     }
 
     // AddTab button: just opens the dialog
@@ -66,9 +62,30 @@ $( function() {
 
     // Close icon: removing the tab on click
     tabs.on( "click", "span.ui-icon-close", function() {
-      var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
+      var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" ),
+          currentTabId=$( "#" + panelId ).selector.slice(1);
+        prevLabels =  Cookies.get('labels').split(":");
+        tabIndex = prevLabels.indexOf(currentTabId);
+
+        if (typeof(prevLabels)!="undefined" && tabIndex !== -1) {
+            prevLabels = prevLabels.filter(function(item) {
+                return item !== currentTabId;
+            })
+
+
+            if(prevLabels.length == 0){
+                console.log('here', prevLabels);
+                Cookies.remove('labels', { path: '/' });
+
+            }
+            else{
+                Cookies.set('labels',prevLabels, {path:'/'});
+            }
+        }
+
       $( "#" + panelId ).remove();
-      tabs.tabs( "refresh" );
+      //location.reload();
+
     });
 
     tabs.on( "keyup", function( event ) {
@@ -91,21 +108,12 @@ $( function() {
             for (i = 0; i < labelList.length; i++) {
                 id = "tabs-" + tabCounter;
                 li = $( tabTemplate.replace( /#\{href\}/g, "#" + labelList[i] ).replace( /#\{label\}/g, labelList[i] ) );
-                cssText = "<style>#messages{\n" +
-                    "\n" +
-                    "    height: 600px;\n" +
-                    "    padding: 15px;\n" +
-                    "    margin: 25px;\n" +
-                    "    left:100%;\n" +
-                    "    overflow-y: scroll;\n" +
-                    "    overflow-x: hidden;\n" +
-                    "    display: grid;\n" +
-                    "    flex-direction: column-reverse;\n" +
-                    "} </style>";
+
 
                 for( j = 0 ; j<userMessagesArray.length ;j++){
+
                     if(String(userMessagesArray[j][0])=== String(labelList[i])){
-                         tabContentHtml = cssText+" <div id = 'messages'>"+userMessagesArray[j].slice(1).join(" ")+"</div>";
+                         tabContentHtml = " <div id = 'messages'>"+userMessagesArray[j].slice(1).join(" ")+"</div>";
 
                     }
                 }
@@ -132,7 +140,6 @@ $( function() {
 
                             $('input[type="text"]').val("");
                             console.log("/"+id+"/");
-
                             $('#' + id + ' > #messages' ).append(data.slice(position_of_id_end+7));
                             }
                     });
@@ -162,9 +169,17 @@ $( function() {
                 inputElem.value = Cookies.get('csrftoken');
                 f.appendChild(inputElem);
 
-
+                var cssText = "<style>#messages{\n" +
+                    "\n" +
+                    "    height: 600px;\n" +
+                    "    padding: 15px;\n" +
+                    "    margin: 25px;\n" +
+                    "    left:100%;\n" +
+                    "    overflow-y: scroll;\n" +
+                    "    overflow-x: hidden;\n" +
+                    "} </style>";
                 tabs.find( ".ui-tabs-nav" ).append( li );
-                tabs.append( "<div id='" + labelList[i] + "'><p>" + tabContentHtml + "</p></div>" );
+                tabs.append( cssText + "<div id='" + labelList[i] + "'><p>" + tabContentHtml + "</p></div>" );
                 $('#'+labelList[i]).append(f);
                 tabs.tabs( "refresh" );
                 tabCounter++;

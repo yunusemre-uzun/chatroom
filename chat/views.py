@@ -85,7 +85,8 @@ class AjaxChatView(View):
             message_object = Message(text=new_message,sender= user,receiver = receiver ,date=timezone.now())
             message_object.save()
             receiver.save()
-            message_list = Message.objects.filter(Q(sender=user.id, receiver=receiver.id) | Q(sender=receiver.id, receiver=user.id)).order_by('-date')[::-1]
+            message_list = Message.objects.filter(
+                Q(sender=receiver, receiver=user)).order_by('-date')
             form = MessageForm()
             context = {'messageList': message_list, 'username': username, 'receiver': receiver, 'form':form}
             return render(request,'chat/ajaxPostChatroom.html',context)
