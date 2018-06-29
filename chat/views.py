@@ -41,14 +41,12 @@ class ChatView(View):
             message.save()
         user.save()
         ##############################################
-       # if (request.is_ajax()): #if the request is ajax, only renders the message part
-           # context = {'messageList': message_list }
-          #  return render(request, 'chat/ajaxChatroom.html', context)
         return render(request,'chat/chatroom.html',context)
 
     def post(self, request, **kwargs):
         username = kwargs['username']
         receiverName = kwargs['receiver']
+
         form = MessageForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             user = MyUser.objects.get(username=username)
@@ -303,3 +301,15 @@ def getCookieMessages(request,username):
         return message_dict
     except:
         return
+
+
+class SaveMessageView(View):
+    def get(self,request, **kwargs):
+        username = kwargs['username']
+        receiverName = kwargs['receiver']
+        user = MyUser.objects.get(username=username)
+        receiver = MyUser.objects.get(username=receiverName)
+        new_message = kwargs['message_text']
+        message_object = Message(text=new_message, sender=user, receiver=receiver, date=timezone.now())
+        message_object.save()
+        return HttpResponse("Successful")

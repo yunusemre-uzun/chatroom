@@ -141,7 +141,7 @@ body {font-size:16px;}
       <script>
           var chat_form = '{{ chat_form }}';
           var messagelist = {{ value|safe }};
-          messagelist.unshift({{ key}});
+          messagelist.unshift("{{ key}}");
           userMessagesArray.push(messagelist);
           console.log(userMessagesArray);
       </script>

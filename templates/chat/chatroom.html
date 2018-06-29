@@ -1,86 +1,88 @@
-<!DOCTYPE html>
+{#<!DOCTYPE html>#}
+{##}
+{#<html lang="en">#}
+{#<head>#}
+{#    {% load static %}#}
+{#    <script src="{% static 'script/js.cookie.js' %}"></script>#}
+{#   <script src= "{% static 'script/chatroom.js' %}"></script>#}
+{#    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>#}
+{#    <link rel = "stylesheet" type="text/css" href = "{% static 'css/chatroom.css' %}">#}
+{##}
+{#    <script>#}
+{#        var username = {{ username }};#}
+{#        var receiver = {{ receiver }};#}
+{#        //refresh()#}
+{#        $(document).on('submit' ,'#messageForm', function (e) {#}
+{#            e.preventDefault();#}
+{#            console.log("form submitted");#}
+{#            $.ajax({#}
+{#                type:'POST',#}
+{#                url:'/user/chatroom/'+username+'/'+receiver+ '/',#}
+{#                data : { the_message : $('#message-text').val() , 'csrfmiddlewaretoken': '{{csrf_token}}'},#}
+{#                success: function (data) {#}
+{##}
+{#                    $('#formDiv').html(data);#}
+{#                }#}
+{#            })#}
+{##}
+{#        });#}
+{##}
+{#    </script>#}
+{##}
+{#<style>#}
+{##}
+{#    body, html {#}
+{#        height: 100%;#}
+{#        }#}
+{#    .bg {#}
+{#    background-image: url("{% static "images/background.png" %}");#}
+{#    height: 100%;#}
+{#    width: 100%;#}
+{#    background-position: center;#}
+{#    background-repeat: no-repeat;#}
+{#    background-size: cover;#}
+{#    background-color: #096388;#}
+{##}
+{##}
+{##}
+{#</style>#}
+{##}
+{#{% if user.username == username  %}#}
+{##}
+{#    <meta charset="UTF-8">#}
+{##}
+{#</head>#}
+{##}
+{#<body>#}
+{##}
+{##}
+{#<div id = 'formDiv'>#}
+{#    <div id = "messageBorder">#}
+{#            <span id = "messageList" class="container">#}
+{#                {% if messageList %}#}
+{#                    {% for message in messageList %}#}
+{#                        <h4> > <strong>{{ message.sender }}</strong> : {{ message.text }} (<i>{{message.date}}</i>) </h4>#}
+{#                    {% endfor %}#}
+{##}
+{#                {% else %}#}
+{#                    <p>No messages available.</p>#}
+{#                {% endif %}#}
+{#            </span>#}
+{#    </div>#}
+{##}
+{#    <form action="/user/{{ username }}/chat/{{ receiver }}/" method="post" id = "messageForm">#}
+{#        {% csrf_token %}#}
+{#        {{form}}#}
+{#        <input type="submit" value="Send">#}
+{#    </form>#}
+{#</div>#}
+{#    {% else %}#}
+{#            <h4>You are not logged in as user {{ username }}, you can't see this page.</h4>#}
+{#            <a href="{% url 'index' %}">Click here to log in</a>#}
+{#    {% endif %}#}
+{#</body>#}
+{##}
+{#</html>#}
+{##}
 
-<html lang="en">
-<head>
-    {% load static %}
-    <script src="{% static 'script/js.cookie.js' %}"></script>
-   <script src= "{% static 'script/chatroom.js' %}"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <link rel = "stylesheet" type="text/css" href = "{% static 'css/chatroom.css' %}">
-
-    <script>
-        var username = {{ username }};
-        var receiver = {{ receiver }};
-        //refresh()
-        $(document).on('submit' ,'#messageForm', function (e) {
-            e.preventDefault();
-            console.log("form submitted");
-            $.ajax({
-                type:'POST',
-                url:'/user/chatroom/'+username+'/'+receiver+ '/',
-                data : { the_message : $('#message-text').val() , 'csrfmiddlewaretoken': '{{csrf_token}}'},
-                success: function (data) {
-
-                    $('#formDiv').html(data);
-                }
-            })
-
-        });
-
-    </script>
-
-<style>
-
-    body, html {
-        height: 100%;
-        }
-    .bg {
-    background-image: url("{% static "images/background.png" %}");
-    height: 100%;
-    width: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-color: #096388;
-} /*adds background*/
-
-
-</style>
-
-{% if user.username == username  %}
-
-    <meta charset="UTF-8">
-
-</head>
-
-<body class = "bg">
-
-
-<div id = 'formDiv'>
-    <div id = "messageBorder">
-            <span id = "messageList" class="container">
-                {% if messageList %}
-                    {% for message in messageList %}
-                        <h4> > <strong>{{ message.sender }}</strong> : {{ message.text }} (<i>{{message.date}}</i>) </h4>
-                    {% endfor %}
-
-                {% else %}
-                    <p>No messages available.</p>
-                {% endif %}
-            </span>
-    </div>
-
-    <form action="/user/{{ username }}/chat/{{ receiver }}/" method="post" id = "messageForm">
-        {% csrf_token %}
-        {{form}}
-        <input type="submit" value="Send">
-    </form>
-</div>
-    {% else %}
-            <h4>You are not logged in as user {{ username }}, you can't see this page.</h4>
-            <a href="{% url 'index' %}">Click here to log in</a>
-    {% endif %}
-</body>
-
-</html>
-
+<h2>Hi</h2>

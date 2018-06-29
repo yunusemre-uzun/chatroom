@@ -207,55 +207,77 @@ $( function() {
         console.log(labels);
         if (typeof(labels) != "undefined") {
             labelList = labels.split(":");
-
+            console.log(labelList);
             for (i = 0; i < labelList.length; i++) {
+                console.log(labelList[i]);
                 id = "tabs-" + tabCounter;
                 li = $( tabTemplate.replace( /#\{href\}/g, "#" + labelList[i] ).replace( /#\{label\}/g, labelList[i] ) );
 
 
                 for( j = 0 ; j<userMessagesArray.length ;j++){
                     if(String(userMessagesArray[j][0])=== String(labelList[i])){
-                        // var f = document.createElement("form");
-                        // f.setAttribute('method',"post");
-                        // f.setAttribute('action',"submit.php");
-                        //
-                        // //create input element
-                        // var i = document.createElement("input");
-                        // i.type = "text";
-                        // i.name = "user_name";
-                        // i.id = "user_name1";
-                        //
-                        // var s = document.createElement("input");
-                        // s.type = "submit";
-                        // s.value = "Submit";
-                        // f.appendChild(i);
-                        // f.appendChild(s);
-                        //
-                        // var inputElem = document.createElement('input');
-                        // inputElem.type = 'hidden';
-                        // inputElem.name = 'csrfmiddlewaretoken';
-                        // inputElem.value = Cookies.get('csrftoken');
-                        // f.appendChild(inputElem);
-
-
-                        var csrf = "<input id=\"token\" type=\"hidden\" value= "+ Cookies.get('csrftoken') +" ></input>"
-                        formHtml = " <form action=\"/user/"+username+"/friends/\" method=\"post\" id = \"messageForm\">\n" +
-                            csrf+ "\n" + chat_form + "<input type=\"submit\" value=\"Send\">\n" + "</form>";
                          tabContentHtml = "<div id = 'messages'>"+userMessagesArray[j].slice(1).join(" ")+"</div>";
 
-                         //TODO csrf does not work
                          console.log(tabContentHtml);
                     }
                 }
 
+                var f = document.createElement("form");
+                f.setAttribute('method',"post");
+                f.setAttribute('id',labelList[i]);
+                f.setAttribute('name',labelList[i]);
+                f.onclick = function onclick(event){
+                    var message_text = document.getElementById("message_"+String(this.name)).value;
+                    var button_node = this.childNodes[1];
+                    // $('#'+button_node.id).click(function () {
+                    //     return 1;
+                    // })
+                    // console.log(isButtonClicked);
+                    if(message_text !== ""){
+                      $.ajax({
+                        url: '/user/'+username+'/chat/'+this.name + '/' + message_text + '/' ,
+                        dataType : 'html',
+                        timeout : 30000,
+                        success: function(data){
+                            console.log("message successfuly saved to database");
+                        }
+                    });
+                    console.log(message_text);}
+
+                };
+
+                var k = document.createElement("input");
+                k.setAttribute('type', 'text');
+                k.setAttribute('name', labelList[i]);
+                k.setAttribute('id', "message_"+labelList[i]);
+
+                var s = document.createElement("input");
+                s.type = "button";
+                s.value = "Submit";
+                s.setAttribute('id', "button_"+labelList[i]);
+
+
+
+                f.appendChild(k);
+                f.appendChild(s);
+
+                var inputElem = document.createElement('input');
+                inputElem.type = 'hidden';
+                inputElem.name = 'csrfmiddlewaretoken';
+                inputElem.value = Cookies.get('csrftoken');
+                f.appendChild(inputElem);
+
+
                 tabs.find( ".ui-tabs-nav" ).append( li );
                 tabs.append( "<div id='" + labelList[i] + "'><p>" + tabContentHtml + "</p></div>" );
+                $('#'+labelList[i]).append(f);
                 tabs.tabs( "refresh" );
                 tabCounter++;
                 id = "tabs-" + tabCounter;
                 tabContentHtml =  "";
             }
         }
+        $( "#tabs" ).tabs({ active: 0 });
 
     }
     $( document ).ready(function() {
