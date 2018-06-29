@@ -96,18 +96,21 @@ class AjaxChatView(View):
     def refreshmessages(self,username,receivername):
         new_request = timezone.now()
         user = MyUser.objects.get(username=username)
-        receiver = MyUser.objects.get(username=receivername)        
+        #print(receivername)
+        receiver = MyUser.objects.get(username=receivername)
         last_request = user.last_request
         user.last_request = new_request
         user.save()
         message_list = Message.objects.filter(
             Q(sender=user, receiver=receiver) | Q(sender=receiver, receiver=user)).order_by('-date')
         latest_message = message_list[0]
-        if not(latest_message.date<new_request and latest_message.date>last_request):
-                return []
+        if ((not(latest_message.date<new_request and latest_message.date>last_request)) and latest_message.is_read):
+            return []
         return_message_list = []
         for message in message_list:
-            if(message.date<new_request and message.date>last_request):
+            if((message.date<new_request and message.date>last_request) or (not(message.is_read))):
+                message.is_read = True
+                message.save()
                 return_message_list.append(latest_message)
             else:
                 break
@@ -193,9 +196,10 @@ class FriendView(View):
                 if(i[1]>0):
                     c_person = i[0]
         ####################################
+        chat_form = MessageForm()
         context = {'user':user,'flist':ret,'message_count':unread_message_count_list,'username':username,
                     'form':form,'new_messages':new_messages,'number_of_channels':number_of_channels,
-                    'c_key':c_key, 'c_person':c_person,'receiver':receiver, 'message_dict':message_dict}
+                    'c_key':c_key, 'c_person':c_person,'receiver':receiver, 'message_dict':message_dict,'chat_form':chat_form}
         return render(request,'chat/friends.html',context)
 
 
@@ -286,8 +290,10 @@ class NotificationView(View):
 def getCookieMessages(request,username):
     message_dict = {}
     try:
-        cookies = request.COOKIES['labels'];
-        cookieList = cookies.split('%3A');
+        cookies = request.COOKIES['labels']
+
+        cookieList = cookies.split('%3A')
+        print(cookieList)
         user = MyUser.objects.get(username=username)
         for receiver in cookieList:
             receiver = MyUser.objects.get(username = receiver)
