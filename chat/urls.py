@@ -14,4 +14,5 @@ urlpatterns = [
     path('chatroom/<str:username>/', views.AjaxChatView.as_view(), name='ajax_chat'),
     path('ajaxFriends/<str:username>', views.FriendView2.as_view(), name='friend'),
     path('notification/<str:username>', views.NotificationView.as_view(), name='notification'),
+    path('loadmore/<str:username>/<str:receiver>/',views.LoadMoreView.as_view(),name = 'load_more'),
 ]

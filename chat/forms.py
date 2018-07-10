@@ -30,4 +30,4 @@ class SignUpForm(forms.Form):
     sname = forms.CharField(label='Second Name',max_length = 1024)
 
 class AddFriendForm(forms.Form):
-    username = forms.CharField(label="Username",max_length=150,required=False)
+    username = forms.CharField(label='', max_length=150, required=False,  widget=forms.TextInput(attrs={'class': 'special'}))

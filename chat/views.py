@@ -1,4 +1,6 @@
 import json
+import urllib
+from urllib.parse import urlparse
 
 from  django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
@@ -15,6 +17,8 @@ from .models import Message, MyUser
 from .forms import *
 
 
+#TODO load moe mesages ozelligi getir
+
 class IndexView(View):
     def get(self,request):
         form = UserForm()
@@ -29,13 +33,12 @@ class ChatView(View):
         receiver_name = kwargs['receiver']
         user = MyUser.objects.get(username= username)
         receiver = MyUser.objects.get(username = receiver_name)
-        #filter(Q(..) | Q(..)) allows the usage of or in filter function
+        #filter(Q(..) | Q(..)) allows the usage of 'or' in filter function
         message_list = Message.objects.filter(Q(sender = user.id,receiver = receiver.id) | Q(sender = receiver.id, receiver = user.id)).order_by('-date')[::-1]
         form = MessageForm()
         context = {'roomName':'','messageList':message_list,'form':form, 'username':username ,'receiver':receiver}
         #change the unread messages status from {{receivername}} to {{username}} in database to read(coming messages)
         change_message_list = list(Message.objects.filter(sender=receiver.id,receiver=user.id,is_read=False))
-        #print(change_message_list)
         for message in change_message_list:
             message.is_read=True
             message.save()
@@ -65,10 +68,10 @@ class AjaxChatView(View):
         cookies = request.COOKIES.get('labels')
         if(cookies==None):
             return HttpResponse("")
-        active_chats = cookies.split("%3A")
+        unquoted_cookies = urllib.parse.unquote(cookies)
+        active_chats = json.loads(unquoted_cookies)
         new_messages = []
-        #active_chats[0]="kalabalık"
-        for user in active_chats :
+        for user in active_chats:
             user_messages = self.refreshmessages(username,user)
             new_messages.append(user_messages)
         user = MyUser.objects.get(username=username)
@@ -102,10 +105,15 @@ class AjaxChatView(View):
         user.save()
         message_list = Message.objects.filter(
             Q(sender=receiver, receiver=user)).order_by('-date')
-        latest_message = message_list[0]
+
+        return_message_list = []
+
+        if(len(message_list)):
+            latest_message = message_list[0]
+        else:
+            return return_message_list
         if ((not(latest_message.date<new_request and latest_message.date>last_request)) and latest_message.is_read):
             return []
-        return_message_list = []
         for message in message_list:
             if((message.date<new_request and message.date>last_request) or (not(message.is_read))):
                 message.is_read = True
@@ -157,7 +165,7 @@ class FriendView(View):
     def get(self,request, **kwargs):
 
         username = kwargs['username']
-        receiver = kwargs.get('receiverName' , "None")
+        receiver = kwargs.get('receiverName', "None")
 
         message_dict = getCookieMessages(request,username)
 
@@ -289,15 +297,13 @@ class NotificationView(View):
 def getCookieMessages(request,username):
     message_dict = {}
     try:
-        cookies = request.COOKIES['labels']
-
-        cookieList = cookies.split('%3A')
-        #print(cookieList)
+        cookies =urllib.parse.unquote(request.COOKIES['labels'])
+        cookie_list = json.loads(cookies)
         user = MyUser.objects.get(username=username)
-        for receiver in cookieList:
+        for receiver in cookie_list:
             receiver = MyUser.objects.get(username = receiver)
             message_list = Message.objects.filter(
-            Q(sender=user.id, receiver=receiver.id) | Q(sender=receiver.id, receiver=user.id)).order_by('-date')[::-1]
+            Q(sender=user.id, receiver=receiver.id) | Q(sender=receiver.id, receiver=user.id)).order_by('-date')[:80:-1]
             message_texts = []
             for message in message_list:
                 message_texts.append("<h4> <strong>"+str(message.sender)+"</strong> : "+str(message.text) +"(<i>" +str(message.date)+"</i>) </h4>")
@@ -312,9 +318,32 @@ class SaveMessageView(View):
     def get(self,request, **kwargs):
         username = kwargs['username']
         receiverName = kwargs['receiver']
-        user = MyUser.objects.get(username=username)
-        receiver = MyUser.objects.get(username=receiverName)
         new_message = kwargs['message_text']
-        message_object = Message(text=new_message, sender=user, receiver=receiver, date=timezone.now())
-        message_object.save()
+        message_object = saveMessage(username,receiverName, new_message) #returns the saved message
         return HttpResponse("<data>"+receiverName+"</data>"+"<h4> <strong>"+str(message_object.sender)+"</strong> : "+str(message_object.text) +"(<i>" +str(message_object.date)+"</i>) </h4>")
+
+
+def saveMessage(username,receiver_name ,new_message):
+    user = MyUser.objects.get(username=username)
+    receiver = MyUser.objects.get(username=receiver_name)
+    message_object = Message(text=new_message, sender=user, receiver=receiver, date=timezone.now())
+    message_object.save()
+    return message_object
+
+class LoadMoreView(View):
+
+    def get(self,request, **kwargs):
+        username = kwargs['username']
+        receiver_name = kwargs['receiver']
+        user = MyUser.objects.get(username=username)
+        receiver = MyUser.objects.get(username=receiver_name)
+        message_list = Message.objects.filter(Q(sender = user.id,receiver = receiver.id) | Q(sender = receiver.id, receiver = user.id)).order_by('-date')[80::-1]
+        if(len(message_list)==0):
+            return HttpResponse("<h6><i> No more messages to load </i></h6>");
+        message_texts = []
+        for message in message_list:
+            message_texts.append(
+                "<h4> <strong>" + str(message.sender) + "</strong> : " + str(message.text) + "(<i>" + str(
+                    message.date) + "</i>) </h4>")
+
+        return HttpResponse(message_texts)

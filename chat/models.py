@@ -6,6 +6,7 @@ from django.utils import timezone
 
 max_number_of_friends = 100
 
+
 class MyUser(User):
     username_validator = ASCIIUsernameValidator()
     friend_list = models.CharField(max_length=max_number_of_friends*151,default=":.")
